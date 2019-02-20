@@ -1,3 +1,4 @@
+//PLEASE NOTE THAT EcmaScript 6 IS REQUIRED!
 
 //------------------------------------
 //INITIAL DATA
@@ -55,7 +56,7 @@ function Note(s, f, d = 1) {
   return {type: "note", string: s, fret: f, name: n, duration: d};
 }
 
-//returns a "chord" object, c should be a list of Note objects
+//returns a "chord" object, the chord parameter should be a list of Note objects
 function Chord(chord, d = 1) {
   return {type: "chord", chord: chord, duration: d};
 }
@@ -120,7 +121,7 @@ function printTab(npr = 15) {
     for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
       tab_row_elements += '<span id="row_'+row+'_string_'+i+'"></span><br>';  //add a <span> element for each string
     }
-    tab_row_elements += '<br>';   //empty row between tab rows
+    tab_row_elements += '<br><br>';   //empty row between tab rows
   }
   tab_text += tab_row_elements;
   tab_text += '</p>';
@@ -133,16 +134,30 @@ function printTab(npr = 15) {
     }
     for(var i=0; i<notes_per_row && note_index < tab.length; i++) {
       if(tab[note_index].type == "note") {    //if the note type is a note
-        note = tab[note_index];
+        var note = tab[note_index];   //the note
         for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
           if(note.string == k) {    //if the note is located on the current string
             string_list[k-1] += note.fret.toString() + '---';   //add the note to the string
           } else {
-            string_list[k-1] += '----';
+            string_list[k-1] += '----';   //add an empty space
           }
         }
       } else if(tab[note_index].type == "chord") {    //if the note type is a chord
-
+        var chord = tab[note_index];    //the chord
+        var occupied_strings = [];    //list used to check if a string already has a note
+        for(var k=0; k<chord.chord.length; k++) {   //for each note in the chord
+          var note = chord.chord[k];    //the note
+          if(!occupied_strings.includes(note.string)) {   //if the string does not already have a note
+            string_list[note.string-1] += note.fret.toString() + '---';   //add the note to the string
+            occupied_strings.push(note.string);
+          }
+        }
+        for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
+          if(!occupied_strings.includes(k)) {   //if the string does not already have a note
+            string_list[k-1] += '----';   //add an empty space
+            occupied_strings.push(k);
+          }
+        }
       }
       note_index++;   //move to the next note in the tab
     }
@@ -160,7 +175,8 @@ function printTab(npr = 15) {
 function generate() {
   tab.length = 0;   //resets tab, this can be changed to tab = []; if needed
   for(var i=0; i<10; i++) {
-    tab.push(Note(i%2+1,i));
+    chord = Chord([Note(i%2+1,i),Note(i%2+2,i)]);
+    tab.push(chord);
   }
 }
 
@@ -173,5 +189,5 @@ function generate() {
 $("#button_generate").click(function() {
   initialize();
   generate();
-  printTab();
+  printTab(5);
 });
