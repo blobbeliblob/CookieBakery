@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <html lang="en-US">
+    <meta name="author" content="Camilo Hernández">
+    <meta name="description" content="A simple tool for generating guitar tabs.">
+    <title>CookieBakery</title>
+    <link rel="stylesheet" href="CookieBakery.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="generator_settings">
+
+      <!-- root selection -->
+      <div id="div_root">
+        <p>Root</p>
+        <select required id="root">
+        </select>
+      </div>
+      <!-- note selection -->
+      <div id="div_mode">
+        <p>Mode</p>
+        <div id="div_mode_select">
+          <select id="mode_select">
+          </select>
+        </div>
+        <div id="div_mode_checkboxes">
+        </div>
+      </div>
+      <!-- number of strings -->
+      <div id="div_strings">
+        <p>Number of strings</p>
+        <select required id="strings">
+        </select>
+      </div>
+      <!-- number of frets -->
+      <div id="div_frets">
+        <p>Number of frets</p>
+        <select required id="frets">
+        </select>
+      </div>
+      <!-- number of notes in the melody -->
+      <div id="div_notes">
+        <p>Number of notes</p>
+        <select required id="notes">
+        </select>
+      </div>
+      <!-- maximum jump between strings -->
+      <div id="div_max_string_jump">
+        <p>Maximum string jump</p>
+        <select required id="max_string_jump">
+        </select>
+      </div>
+      <!-- maximum jump between frets -->
+      <div id="div_max_fret_jump">
+        <p>Maximum fret jump</p>
+        <select required id="max_fret_jump">
+        </select>
+      </div>
+      <!-- tuning selection -->
+      <div id=div_tuning>
+      </div>
+      <!-- generate button -->
+      <div id=div_button_generate>
+        <button type="button" id="button_generate">Generate</button>
+      </div>
+
+    </div>
+    <script type="text/javascript" src="CookieBakery.js"></script>
+
+    <div id="div_tab">
+    </div>
+    <script type="text/javascript" src="Generator.js"></script>
+
+  </body>
+</html>

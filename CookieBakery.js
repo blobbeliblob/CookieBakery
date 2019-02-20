@@ -1,0 +1,181 @@
+
+var max_string_number = 8;
+var max_fret_number = 24;
+var max_note_number = 100;
+
+var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
+
+//set the root selection
+function set_root_select() {
+  var root_select = "";
+  for(var i=0; i<root_list.length; i++) {
+    root_select += '<option value="'+root_list[i]+'">'+root_list[i]+'</option>';
+  }
+  $("#root").html(root_select);
+}
+
+//set the mode selection
+function set_mode_select() {
+  var mode_select = "";
+  var mode_list = ["Custom","Ionian","Dorian","Phrygian","Lydian","Mixolydian","Aeolian","Locrian"];
+  for(var i=0; i<mode_list.length; i++) {
+    mode_select += '<option value="'+mode_list[i]+'">'+mode_list[i]+'</option>';
+  }
+  $("#mode_select").html(mode_select);
+  var mode_checkboxes = "";
+  for(var i=0; i<root_list.length; i++) {
+    mode_checkboxes += '<label for="'+root_list[i]+'_checkbox">'+root_list[i]+'</label>';
+    mode_checkboxes += '<input type="checkbox" name="'+root_list[i]+'_checkbox" id="'+root_list[i]+'_checkbox" class="mode_checkboxes" value="'+root_list[i]+'">';
+    if(i==3 || i==7) {
+      mode_checkboxes += "<br>";
+    }
+  }
+  $("#div_mode_checkboxes").html(mode_checkboxes);
+  set_mode_notes();
+}
+
+//set the number of strings
+function set_strings_select() {
+  var string_number = "";
+  for(var i=1; i<=max_string_number; i++) {
+    string_number += '<option value="'+i+'">'+i+'</option>';
+  }
+  $('#strings').html(string_number);
+}
+
+//set the number of frets
+function set_frets_select() {
+  var fret_number = "";
+  for(var i=0; i<=max_fret_number; i++) {
+    fret_number += '<option value="'+i+'">'+i+'</option>';
+  }
+  $('#frets').html(fret_number);
+}
+
+//set the number of desired notes selection
+function set_notes_select() {
+  var note_number = "";
+  for(var i=1; i<=max_note_number; i++) {
+    note_number += '<option value="'+i+'">'+i+'</option>';
+  }
+  $('#notes').html(note_number);
+}
+
+//set the max string jump selection
+function set_max_string_jump_select() {
+  var max_string_number = "";
+  var number_of_strings = $("#strings").val();
+  for(var i=1; i<=number_of_strings-1; i++) {
+    max_string_number += '<option value="'+i+'">'+i+'</option>';
+  }
+  $('#max_string_jump').html(max_string_number);
+}
+
+//set the max fret jump selection
+function set_max_fret_jump_select() {
+  var max_fret_number = "";
+  var number_of_frets = $("#frets").val();
+  for(var i=1; i<=number_of_frets; i++) {
+    max_fret_number += '<option value="'+i+'">'+i+'</option>';
+  }
+  $('#max_fret_jump').html(max_fret_number);
+}
+
+//set the tuning selection
+function set_tuning_select() {
+  var tuning_select = "<p>Tuning</p>";
+  var number_of_strings = $("#strings").val();
+  for(var i=1; i<=number_of_strings; i++) {
+    tuning_select += '<select required id="tuning_string_'+i+'">';
+    for(var k=0; k<root_list.length; k++) {
+      tuning_select += '<option value="'+root_list[k]+'">'+root_list[k]+'</option>';
+    }
+    tuning_select += '</select>';
+    $('#div_tuning').html(tuning_select);
+    tuning_select += '&nbsp||-----<br>';
+  }
+  tuning_select += "<br>";
+  $('#div_tuning').html(tuning_select);
+}
+
+//update an element
+function update_element(element_id) {
+  $(element_id).load(location.href + " " + element_id);
+}
+
+//select the appropriate notes for the chosen mode
+function set_mode_notes() {
+  var mode = $("#mode_select").val();
+  if(mode == "Custom") {
+    for(var i=0; i<root_list.length; i++) {
+      $('[id="'+root_list[i]+'_checkbox"]').prop("checked", false);
+      $('[id="'+root_list[i]+'_checkbox"]').attr("disabled", false);
+    }
+    $('[id="'+$("#root").val()+'_checkbox"]').prop("checked", true);
+    $('[id="'+$("#root").val()+'_checkbox"]').attr("disabled", true);
+  } else {
+    for(var i=0; i<root_list.length; i++) {
+      $('[id="'+root_list[i]+'_checkbox"]').prop("checked", false);
+      $('[id="'+root_list[i]+'_checkbox"]').attr("disabled", true);
+    }
+    var root = $("#root").val();
+    var intervals = [];   //  1=half step (semitone), 2=whole step
+    if(mode == "Ionian") {
+      intervals = [2,2,1,2,2,2,1];
+    } else if(mode == "Dorian") {
+      intervals = [2,1,2,2,2,1,2];
+    } else if(mode == "Phrygian") {
+      intervals = [1,2,2,2,1,2,2];
+    } else if(mode == "Lydian") {
+      intervals = [2,2,2,1,2,2,1];
+    } else if(mode == "Mixolydian") {
+      intervals = [2,2,1,2,2,1,2];
+    } else if(mode == "Aeolian") {
+      intervals = [2,1,2,2,1,2,2];
+    } else if(mode == "Locrian") {
+      intervals = [1,2,2,1,2,2,2];
+    }
+    var noteName = root;
+    for(var i=0; i<intervals.length; i++) {
+      for(var k=0; k<intervals[i]; k++) {
+        if(noteName == "G#") {
+          noteName = "A";
+        } else {
+          noteName = root_list[root_list.indexOf(noteName)+1];
+        }
+      }
+      $('[id="'+noteName+'_checkbox"]').prop("checked", true);
+    }
+  }
+}
+
+//initialize fields
+set_root_select();
+set_mode_select();
+set_notes_select();
+set_strings_select();
+set_frets_select();
+set_max_string_jump_select();
+set_max_fret_jump_select();
+set_tuning_select();
+
+//update the max string jump select and tuning select when the string number changes
+$("#strings").change(function() {
+  set_max_string_jump_select();
+  update_element("#strings");
+  set_tuning_select();
+  update_element("#div_tuning");
+});
+//update the mode select when root is changed or mode is changed
+$("#root").change(function() {
+  set_mode_notes();
+});
+$("#mode_select").change(function() {
+  set_mode_notes();
+});
+//update the max fret jump select when the fret number changes
+$("#frets").change(function() {set_max_fret_jump_select();update_element("#frets");});
+//update the tuning select when it is changed
+$("#div_tuning").change(function() {
+  update_element("#div_tuning");
+});
