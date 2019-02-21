@@ -25,6 +25,7 @@ var maxFretJump;
 //maximum string change between successive notes
 var maxStringJump;
 
+//initializes the variables with the user defined values
 function initialize() {
   root = $("#root").val();
   tonics = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
@@ -140,21 +141,45 @@ function printTab(npr = 15) {
             string_list[k-1] += note.fret.toString() + '---';   //add the note to the string
           } else {
             string_list[k-1] += '----';   //add an empty space
+            if(note.fret.toString().length == 2) {
+              string_list[k-1] += '-';   //add an extra empty space to compensate for double digit
+            }
           }
         }
       } else if(tab[note_index].type == "chord") {    //if the note type is a chord
         var chord = tab[note_index];    //the chord
         var occupied_strings = [];    //list used to check if a string already has a note
+        var double_digit = false;   //used to determine if the chord has notes with double digit frets
+        //this for loop check for double digit frets in the chord
+        for(var k=0; k<chord.chord.length; k++) {   //for each note in the chord
+          var note = chord.chord[k];    //the note
+          if(note.fret.toString().length == 2) {    //if the fret of the note in the chord has two digits
+            double_digit = true;    //the chord has a double digit fret
+          }
+        }
+        //this for loop adds the note to corresponding strings
         for(var k=0; k<chord.chord.length; k++) {   //for each note in the chord
           var note = chord.chord[k];    //the note
           if(!occupied_strings.includes(note.string)) {   //if the string does not already have a note
-            string_list[note.string-1] += note.fret.toString() + '---';   //add the note to the string
+            if(double_digit == true) {    //if the chord has notes with double digit frets
+              if(note.fret.toString().length == 2) {    //if the fret of the note has two digits
+                string_list[note.string-1] += note.fret.toString() + '---';   //add the note to the string
+              } else {    //the fret of the note has only one digit
+                string_list[note.string-1] += note.fret.toString() + '----';   //add the note to the string
+              }
+            } else {    //the chord does not have notes with double digit frets
+              string_list[note.string-1] += note.fret.toString() + '---';   //add the note to the string
+            }
             occupied_strings.push(note.string);
           }
         }
+        //this for loop adds empty space to corresponding strings
         for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
           if(!occupied_strings.includes(k)) {   //if the string does not already have a note
             string_list[k-1] += '----';   //add an empty space
+            if(double_digit == true) {    //if the chord has notes with double digit frets
+              string_list[k-1] += '-';   //add an extra empty space to compensate for double digit
+            }
             occupied_strings.push(k);
           }
         }
@@ -175,7 +200,7 @@ function printTab(npr = 15) {
 function generate() {
   tab.length = 0;   //resets tab, this can be changed to tab = []; if needed
   for(var i=0; i<10; i++) {
-    chord = Chord([Note(i%2+1,i),Note(i%2+2,i)]);
+    chord = Chord([Note(i%2+1,i+8),Note(i%2+2,i)]);
     tab.push(chord);
   }
 }
