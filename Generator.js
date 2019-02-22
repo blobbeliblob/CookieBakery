@@ -24,6 +24,8 @@ var desiredNotes;
 var maxFretJump;
 //maximum string change between successive notes
 var maxStringJump;
+//a boolean to determine whether or not the tab should be printed nicely
+var nice_print;
 
 //initializes the variables with the user defined values
 function initialize() {
@@ -44,6 +46,7 @@ function initialize() {
   desiredNotes = $("#notes").val();
   maxFretJump = $("#max_fret_jump").val();
   maxStringJump = $("#max_string_jump").val();
+  nice_print = $('[id="nice_print_checkbox"]').is(":checked");
 }
 
 
@@ -128,6 +131,7 @@ function printTab(npr = 15) {
   tab_text += '</p>';
   $("#div_tab").html(tab_text);   //add the new elements to the "#div_tab" element
   var note_index = 0;   //current note in the tab
+  var nice_print_length = 0;    //this is used to determine the longest string, used for the nice print hack
   for(var row=0; row<tab_rows; row++) {   //for each tab row
     var string_list = [];    //this list is for containing a string for each string
     for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
@@ -188,12 +192,45 @@ function printTab(npr = 15) {
     }
     //this for loop adds the strings to corresponding <span> elements
     for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
-      string_list[i-1] += '|';    //add a final line to the end of the tab row
+      //string_list[i-1] += '|';    //add a final line to the end of the tab row
       $('#row_'+row+'_string_'+i).html(string_list[i-1]);   //add the string text to the corresponding <span> element
+    }
+  }
+  //this is the nice print "pro hacker" fix
+  if(nice_print == true) {
+    //determine the length of the longest string
+    for(var row=0; row<tab_rows; row++) {
+      for(var i=1; i<=strings; i++) {
+        var str = $('#row_'+row+'_string_'+i).text();
+        if(str.length > nice_print_length) {
+          nice_print_length = str.length;
+        }
+      }
+    }
+    //extend the string until it is of adequate length
+    for(var row=0; row<tab_rows; row++) {
+      for(var i=1; i<=strings; i++) {
+        var str = $('#row_'+row+'_string_'+i).text();
+        while(str.length < nice_print_length) {
+          str += '-';
+        }
+        str += '|';
+        $('#row_'+row+'_string_'+i).html(str);
+      }
     }
   }
   updateElement("#div_tab");    //update the "#div_tab" element
 }
+
+//part of the "nice print hack", this runs the printTab() method if the nice print checkbox is ticked/unticked
+$("#nice_print_checkbox").change(function() {
+  if(this.checked) {
+    nice_print = true;
+  } else {
+    nice_print = false;
+  }
+  printTab();
+});
 
 //------------------------------------
 //GENERATOR LOGIC
@@ -201,9 +238,9 @@ function printTab(npr = 15) {
 
 function generate() {
   tab.length = 0;   //resets tab, this can be changed to tab = []; if needed
-  for(var i=0; i<10; i++) {
-    var note = Note(i%2+1,i+8,i%2+2);
-    var chord = Chord([Note(i%2+1,i+8),Note(i%2+2,i)],i%2+1);
+  for(var i=0; i<20; i++) {
+    var note = Note(i%2+1,i,i%2+2);
+    var chord = Chord([Note(i%2+1,i),Note(i%2+2,i)],i%2+1);
     tab.push(note);
     tab.push(chord);
   }
@@ -222,5 +259,5 @@ function generate() {
 $("#button_generate").click(function() {
   initialize();
   generate();
-  printTab(5);
+  printTab(15);
 });
