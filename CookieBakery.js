@@ -1,7 +1,14 @@
 
+//upper limits for the <select> values
 var max_string_number = 8;
 var max_fret_number = 24;
 var max_note_number = 100;
+//default values for the <select> elements
+var default_root = "A";
+var default_string_number = 6;
+var default_fret_number = 12;
+var default_note_number = 30;
+var default_mode = "Aeolian";
 
 var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
@@ -9,7 +16,7 @@ var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 function set_root_select() {
   var root_select = "";
   for(var i=0; i<root_list.length; i++) {
-    root_select += '<option value="'+root_list[i]+'">'+root_list[i]+'</option>';
+    root_select += '<option value="'+root_list[i]+'" '+((root_list[i]==default_root)?'selected="selected"':'')+'>'+root_list[i]+'</option>';
   }
   $("#root").html(root_select);
 }
@@ -19,7 +26,8 @@ function set_mode_select() {
   var mode_select = "";
   var mode_list = ["Custom","Ionian","Dorian","Phrygian","Lydian","Mixolydian","Aeolian","Locrian"];
   for(var i=0; i<mode_list.length; i++) {
-    mode_select += '<option value="'+mode_list[i]+'">'+mode_list[i]+'</option>';
+    selected_or_not = '';
+    mode_select += '<option value="'+mode_list[i]+'" '+((mode_list[i]==default_mode)?'selected="selected"':'')+'>'+mode_list[i]+'</option>';
   }
   $("#mode_select").html(mode_select);
   var mode_checkboxes = "";
@@ -38,7 +46,7 @@ function set_mode_select() {
 function set_strings_select() {
   var string_number = "";
   for(var i=1; i<=max_string_number; i++) {
-    string_number += '<option value="'+i+'">'+i+'</option>';
+    string_number += '<option value="'+i+'" '+((i==default_string_number)?'selected="selected"':'')+'>'+i+'</option>';
   }
   $('#strings').html(string_number);
 }
@@ -47,7 +55,7 @@ function set_strings_select() {
 function set_frets_select() {
   var fret_number = "";
   for(var i=0; i<=max_fret_number; i++) {
-    fret_number += '<option value="'+i+'">'+i+'</option>';
+    fret_number += '<option value="'+i+'" '+((i==default_fret_number)?'selected="selected"':'')+'>'+i+'</option>';
   }
   $('#frets').html(fret_number);
 }
@@ -56,7 +64,7 @@ function set_frets_select() {
 function set_notes_select() {
   var note_number = "";
   for(var i=1; i<=max_note_number; i++) {
-    note_number += '<option value="'+i+'">'+i+'</option>';
+    note_number += '<option value="'+i+'" '+((i==default_note_number)?'selected="selected"':'')+'>'+i+'</option>';
   }
   $('#notes').html(note_number);
 }
@@ -96,6 +104,14 @@ function set_tuning_select() {
   }
   tuning_select += "<br>";
   $('#div_tuning').html(tuning_select);
+  //default tuning if 6 strings
+  var standard_tuning = ["E","B","G","D","A","E"];
+  if($("#strings").val() == 6) {
+    for(var i=1; i<=number_of_strings; i++) {
+      $('#tuning_string_'+i).val(standard_tuning[i-1]);
+    }
+  }
+  update_element("#div_tuning");
 }
 
 //update an element

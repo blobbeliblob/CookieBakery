@@ -222,16 +222,6 @@ function printTab(npr = 15) {
   updateElement("#div_tab");    //update the "#div_tab" element
 }
 
-//part of the "nice print hack", this runs the printTab() method if the nice print checkbox is ticked/unticked
-$("#nice_print_checkbox").change(function() {
-  if(this.checked) {
-    nice_print = true;
-  } else {
-    nice_print = false;
-  }
-  printTab();
-});
-
 //------------------------------------
 //GENERATOR LOGIC
 //------------------------------------
@@ -260,4 +250,14 @@ $("#button_generate").click(function() {
   initialize();
   generate();
   printTab(15);
+});
+
+//part of the "nice print hack", this runs the printTab() method if the nice print checkbox is ticked/unticked
+$("#nice_print_checkbox").change(function() {
+  if(this.checked) {
+    nice_print = true;
+  } else {
+    nice_print = false;
+  }
+  printTab();
 });
