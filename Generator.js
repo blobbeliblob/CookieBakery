@@ -138,9 +138,9 @@ function printTab(npr = 15) {
         var note = tab[note_index];   //the note
         for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
           if(note.string == k) {    //if the note is located on the current string
-            string_list[k-1] += note.fret.toString() + '---';   //add the note to the string
+            string_list[k-1] += note.fret.toString() + '-' + '--'.repeat(note.duration);   //add the note to the string
           } else {
-            string_list[k-1] += '----';   //add an empty space
+            string_list[k-1] += '--' + '--'.repeat(note.duration);   //add an empty space
             if(note.fret.toString().length == 2) {
               string_list[k-1] += '-';   //add an extra empty space to compensate for double digit
             }
@@ -163,12 +163,12 @@ function printTab(npr = 15) {
           if(!occupied_strings.includes(note.string)) {   //if the string does not already have a note
             if(double_digit == true) {    //if the chord has notes with double digit frets
               if(note.fret.toString().length == 2) {    //if the fret of the note has two digits
-                string_list[note.string-1] += note.fret.toString() + '---';   //add the note to the string
+                string_list[note.string-1] += note.fret.toString() + '-' + '--'.repeat(chord.duration);   //add the note to the string
               } else {    //the fret of the note has only one digit
-                string_list[note.string-1] += note.fret.toString() + '----';   //add the note to the string
+                string_list[note.string-1] += note.fret.toString() + '--' + '--'.repeat(chord.duration);   //add the note to the string
               }
             } else {    //the chord does not have notes with double digit frets
-              string_list[note.string-1] += note.fret.toString() + '---';   //add the note to the string
+              string_list[note.string-1] += note.fret.toString() + '-' + '--'.repeat(chord.duration);   //add the note to the string
             }
             occupied_strings.push(note.string);
           }
@@ -176,7 +176,7 @@ function printTab(npr = 15) {
         //this for loop adds empty space to corresponding strings
         for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
           if(!occupied_strings.includes(k)) {   //if the string does not already have a note
-            string_list[k-1] += '----';   //add an empty space
+            string_list[k-1] += '--' + '--'.repeat(chord.duration);   //add an empty space
             if(double_digit == true) {    //if the chord has notes with double digit frets
               string_list[k-1] += '-';   //add an extra empty space to compensate for double digit
             }
@@ -188,6 +188,7 @@ function printTab(npr = 15) {
     }
     //this for loop adds the strings to corresponding <span> elements
     for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
+      string_list[i-1] += '|';    //add a final line to the end of the tab row
       $('#row_'+row+'_string_'+i).html(string_list[i-1]);   //add the string text to the corresponding <span> element
     }
   }
@@ -206,6 +207,10 @@ function generate() {
     tab.push(note);
     tab.push(chord);
   }
+  tab.push(Note(1,0,1));
+  tab.push(Note(1,0,2));
+  tab.push(Note(1,0,3));
+  tab.push(Note(1,0));
 }
 
 
