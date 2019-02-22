@@ -51,7 +51,7 @@ function initialize() {
 //FUNCTIONALITY
 //------------------------------------
 
-//returns a "note" object
+//returns a "note" object, the d parameter should be an integer in [1,2,3,4]
 function Note(s, f, d = 1) {
   var n = getNoteName(s, f);
   return {type: "note", string: s, fret: f, name: n, duration: d};
@@ -186,6 +186,7 @@ function printTab(npr = 15) {
       }
       note_index++;   //move to the next note in the tab
     }
+    //this for loop adds the strings to corresponding <span> elements
     for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
       $('#row_'+row+'_string_'+i).html(string_list[i-1]);   //add the string text to the corresponding <span> element
     }
@@ -200,7 +201,9 @@ function printTab(npr = 15) {
 function generate() {
   tab.length = 0;   //resets tab, this can be changed to tab = []; if needed
   for(var i=0; i<10; i++) {
-    chord = Chord([Note(i%2+1,i+8),Note(i%2+2,i)]);
+    var note = Note(i%2+1,i+8,i%2+2);
+    var chord = Chord([Note(i%2+1,i+8),Note(i%2+2,i)],i%2+1);
+    tab.push(note);
     tab.push(chord);
   }
 }
