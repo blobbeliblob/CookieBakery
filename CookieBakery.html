@@ -10,15 +10,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
-    <div id="generator_settings">
+    <div id="settings_and_info">
 
+      <div id="gen_set_1" class="generator_settings">
       <!-- root selection -->
       <div id="div_root">
         <p>Root</p>
         <select required id="root" class="select">
         </select>
       </div>
-      <!-- note selection -->
+      <!-- mode selection -->
       <div id="div_mode">
         <p>Mode</p>
         <div id="div_mode_select">
@@ -28,6 +29,20 @@
         <div id="div_mode_checkboxes">
         </div>
       </div>
+      <!-- tuning selection -->
+      <div id="div_tuning">
+      </div>
+      <!-- generate button -->
+      <div id="div_button_generate">
+        <button type="button" id="button_generate">Generate</button>
+      </div>
+      <!-- fancier displaying of the tab -->
+      <div id="div_nice_print">
+        <label for="nice_print_checkbox">Print nicely</label>
+        <input type="checkbox" name="nice_print_checkbox" id="nice_print_checkbox" class="checkbox" value="">
+      </div>
+      </div>
+      <div id="gen_set_2" class="generator_settings">
       <!-- number of strings -->
       <div id="div_strings">
         <p>Number of strings</p>
@@ -58,16 +73,9 @@
         <select required id="max_fret_jump" class="select">
         </select>
       </div>
-      <!-- tuning selection -->
-      <div id="div_tuning">
       </div>
-      <!-- generate button -->
-      <div id="div_button_generate">
-        <button type="button" id="button_generate">Generate</button>
-      </div>
-      <div id="div_nice_print">
-        <label for="nice_print_checkbox">Print nicely</label>
-        <input type="checkbox" name="nice_print_checkbox" id="nice_print_checkbox" class="checkbox" value="">
+
+      <div id="page_info">
       </div>
 
     </div>
