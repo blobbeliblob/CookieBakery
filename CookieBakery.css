@@ -12,11 +12,19 @@ body {
   background-color: WhiteSmoke;
 }
 
+#div_generator {
+  text-align: center;
+}
+
+#div_settings_and_info {
+  text-align: center;
+}
+
 .generator_settings {
   height: 550px;
-  width: fill;
+  width: 150px;
   white-space:nowrap;
-  margin: 15px;
+  margin: 10px;
   padding: 20px;
   border: 2px solid black;
   border-radius: 5px;
@@ -34,10 +42,12 @@ body {
   margin: 10px 0px 0px 0px;
 }
 
-#page_info {
+#div_page_info {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: 16px;
   height: 550px;
-  width: fill;
-  margin: 15px;
+  width:378px;
+  margin: 10px;
   padding: 20px;
   text-align: center;
   min-height: 100px;
@@ -51,7 +61,7 @@ body {
   margin: 15px;
   padding: 15px;
   text-align: center;
-  max-width: 1200px;
+  max-width: 1080px;
   min-height: 100px;
   border: 2px solid black;
   border-radius: 5px;
@@ -60,9 +70,9 @@ body {
 #tab_info {
   font-family: "Courier New", Courier, monospace;
   white-space:nowrap;
+  position: absolute;
+  left: 15%;
   overflow: hidden;
-  position: relative;
-  left: -30%;
 }
 
 #tab_sheet {
@@ -145,4 +155,32 @@ BUTTON DESIGN
   font-weight: bold;
   text-align: center;
   font-size: 14px;
+}
+
+/*
+LINKS
+*/
+
+a:link {
+  color: green;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: pink;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: yellow;
+  background-color: transparent;
+  text-decoration: underline;
 }
