@@ -9,6 +9,8 @@ var default_string_number = 6;
 var default_fret_number = 12;
 var default_note_number = 30;
 var default_mode = "Aeolian";
+//default value for #nice_print_checkbox, true for checked and false for unchecked
+var default_nice_print = true;
 
 var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
@@ -32,8 +34,8 @@ function set_mode_select() {
   $("#mode_select").html(mode_select);
   var mode_checkboxes = "";
   for(var i=0; i<root_list.length; i++) {
-    mode_checkboxes += '<label for="'+root_list[i]+'_checkbox">'+root_list[i]+'</label>';
-    mode_checkboxes += '<input type="checkbox" name="'+root_list[i]+'_checkbox" id="'+root_list[i]+'_checkbox" class="mode_checkboxes" value="'+root_list[i]+'">';
+    mode_checkboxes += '<label for="'+root_list[i]+'_checkbox" class="checkbox_label">'+root_list[i]+'</label>';
+    mode_checkboxes += '<input type="checkbox" name="'+root_list[i]+'_checkbox" id="'+root_list[i]+'_checkbox" class="checkbox" value="'+root_list[i]+'">';
     if(i==3 || i==7) {
       mode_checkboxes += "<br>";
     }
@@ -94,7 +96,7 @@ function set_tuning_select() {
   var tuning_select = "<p>Tuning</p>";
   var number_of_strings = $("#strings").val();
   for(var i=1; i<=number_of_strings; i++) {
-    tuning_select += '<select required id="tuning_string_'+i+'">';
+    tuning_select += '<select required id="tuning_string_'+i+'" class="select tuning_select">';
     for(var k=0; k<root_list.length; k++) {
       tuning_select += '<option value="'+root_list[k]+'">'+root_list[k]+'</option>';
     }
@@ -174,6 +176,10 @@ set_frets_select();
 set_max_string_jump_select();
 set_max_fret_jump_select();
 set_tuning_select();
+
+//set nice print to its default value
+$("#nice_print_checkbox").prop("checked", default_nice_print);
+update_element("#nice_print_checkbox");
 
 //update the max string jump select and tuning select when the string number changes
 $("#strings").change(function() {

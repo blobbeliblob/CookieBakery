@@ -1,5 +1,133 @@
+/*
+padding = extra space within element
+margin = extra space around element
+border = edge of element
+*/
 
+html {
+
+}
+
+body {
+  background-color: WhiteSmoke;
+}
+
+#generator_settings {
+  white-space:nowrap;
+  margin: 15px;
+  padding: 20px;
+  font-size: 16px;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+#generator_settings > div {
+  margin: 20px 0px;
+}
+
+#div_mode_checkboxes {
+  margin: 10px 0px 0px 0px;
+}
+
+/*
+SCROLLBAR DESIGN
+*/
+
+/*  webkit scrollbars not supported in Firefox and Edge / IE */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: lightgrey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: darkgrey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: grey;
+}
+
+/*
+SELECT DESIGN
+*/
+
+.select {
+  height: 24px;
+  overflow: hidden;
+  width: 120px;
+  background-color: WhiteSmoke;
+  border: 1px solid #ccc;
+  padding-left: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.tuning_select {
+  height: 20px;
+  width: 50px;
+}
+
+/*
+CHECKBOX DESIGN
+*/
+
+.checkbox {
+
+}
+
+/*
+BUTTON DESIGN
+*/
+
+#button_generate {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  padding: 5px 5px;
+  border-radius: 5px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+}
+
+/*
+TAB DESIGN
+*/
+
+#div_tab {
+  margin: 15px;
+  padding: 15px;
+  text-align: center;
+  max-width: 1200px;
+  min-height: 100px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+#tab_info {
+  font-family: "Courier New", Courier, monospace;
+  white-space:nowrap;
+  overflow: hidden;
+  position: relative;
+  left: -30%;
+}
 
 #tab_sheet {
+  padding: 5px;
   font-family: "Courier New", Courier, monospace;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.tab_row {
+  white-space:nowrap;
 }

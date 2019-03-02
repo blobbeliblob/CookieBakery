@@ -109,7 +109,7 @@ function tabInfo() {
       tab_info += ', ';
     }
   }
-  tab_info += '</p>';
+  tab_info += '</p><br>';
   return tab_info;
 }
 
@@ -123,7 +123,7 @@ function printTab(npr = 15) {
   var tab_row_elements = '';
   for(var row=0; row<tab_rows; row++) {   //for each tab row
     for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
-      tab_row_elements += '<span id="row_'+row+'_string_'+i+'"></span><br>';  //add a <span> element for each string
+      tab_row_elements += '<span id="row_'+row+'_string_'+i+'" class="tab_row"></span><br>';  //add a <span> element for each string
     }
     tab_row_elements += '<br><br>';   //empty row between tab rows
   }
