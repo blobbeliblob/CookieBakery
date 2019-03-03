@@ -9,8 +9,10 @@ var default_string_number = 6;
 var default_fret_number = 12;
 var default_note_number = 30;
 var default_mode = "Aeolian";
-//default value for #nice_print_checkbox, true for checked and false for unchecked
+var default_tab_type = "notes";
+//default values for checkboxes, true for checked and false for unchecked
 var default_nice_print = true;
+var default_random_notes = false;
 
 var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
@@ -167,6 +169,16 @@ function set_mode_notes() {
   }
 }
 
+//set the tab type select
+function set_tab_type_select() {
+  var tab_type_list = ["notes","notes &amp; chords","chords"];
+  var tab_type_select = "";
+  for(var i=0; i<tab_type_list.length; i++) {
+    tab_type_select += '<option value="'+tab_type_list[i]+'" '+((tab_type_list[i]==default_tab_type)?'selected="selected"':'')+'>'+tab_type_list[i]+'</option>';
+  }
+  $("#tab_type").html(tab_type_select);
+}
+
 //initialize fields
 set_root_select();
 set_mode_select();
@@ -176,10 +188,15 @@ set_frets_select();
 set_max_string_jump_select();
 set_max_fret_jump_select();
 set_tuning_select();
+set_tab_type_select();
 
 //set nice print to its default value
 $("#nice_print_checkbox").prop("checked", default_nice_print);
 update_element("#nice_print_checkbox");
+
+//set random notes to its default value
+$("#random_notes_checkbox").prop("checked", default_random_notes);
+update_element("#random_notes_checkbox");
 
 //update the max string jump select and tuning select when the string number changes
 $("#strings").change(function() {

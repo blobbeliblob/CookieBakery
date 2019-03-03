@@ -26,6 +26,8 @@ var maxFretJump;
 var maxStringJump;
 //a boolean to determine whether or not the tab should be printed nicely
 var nice_print;
+//the type of tab to be generated
+var tab_type;
 
 //initializes the variables with the user defined values
 function initialize() {
@@ -47,6 +49,7 @@ function initialize() {
   maxFretJump = $("#max_fret_jump").val();
   maxStringJump = $("#max_string_jump").val();
   nice_print = $('[id="nice_print_checkbox"]').is(":checked");
+  tab_type = $("#tab_type").val();
 }
 
 
@@ -228,6 +231,20 @@ function printTab(npr = 15) {
 
 function generate() {
   tab.length = 0;   //resets tab, this can be changed to tab = []; if needed
+  if(tab_type=="notes") {
+    generate_notes();
+  } else if(tab_type=="notes & chords") {
+    generate_notes_and_chords();
+  } else if(tab_type=="chords") {
+    generate_chords();
+  }
+}
+
+function generate_notes() {
+
+}
+
+function generate_notes_and_chords() {
   for(var i=0; i<20; i++) {
     var note = Note(i%2+1,i,i%2+2);
     var chord = Chord([Note(i%2+1,i),Note(i%2+2,i)],i%2+1);
@@ -240,6 +257,9 @@ function generate() {
   tab.push(Note(1,0));
 }
 
+function generate_chords() {
+
+}
 
 //------------------------------------
 //RUN THE GENERATOR
