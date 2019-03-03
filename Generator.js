@@ -19,11 +19,11 @@ var tuning;
 //the tab that can be printed, a list of Note and Chord objects
 var tab = [];
 //number of desired notes in the melody
-var desiredNotes;
+var desired_notes;
 //maximum fret change between successive notes
-var maxFretJump;
+var max_fret_jump;
 //maximum string change between successive notes
-var maxStringJump;
+var max_string_jump;
 //a boolean to determine whether or not the tab should be printed nicely
 var nice_print;
 //the type of tab to be generated
@@ -45,9 +45,9 @@ function initialize() {
   for(var i=1; i<=strings; i++) {
     tuning.push($('#tuning_string_'+i).val());
   }
-  desiredNotes = $("#notes").val();
-  maxFretJump = $("#max_fret_jump").val();
-  maxStringJump = $("#max_string_jump").val();
+  desired_notes = $("#notes").val();
+  max_fret_jump = $("#max_fret_jump").val();
+  max_string_jump = $("#max_string_jump").val();
   nice_print = $('[id="nice_print_checkbox"]').is(":checked");
   tab_type = $("#tab_type").val();
 }
@@ -241,7 +241,17 @@ function generate() {
 }
 
 function generate_notes() {
+  //start note, this will not be added to the tab, but used as a reference for the first note
+  var init_str = getRandom(1, strings);
+  var init_fret = getRandom(0, frets);
+  var last = Note(init_str, init_fret);
+  for(int i=0; i<desired_notes; i++) {  //this loop takes care of adding the correct number of notes to the riff
+    if(prob(5)) {   //probability of a random note
 
+    } else {
+      
+    }
+  }
 }
 
 function generate_notes_and_chords() {
