@@ -28,6 +28,8 @@ var max_string_jump;
 var nice_print;
 //the type of tab to be generated
 var tab_type;
+//a boolean to determine whether the tab should include random notes besides modally correct notes
+var random_notes;
 
 //initializes the variables with the user defined values
 function initialize() {
@@ -39,17 +41,18 @@ function initialize() {
       mode.push(tonics[i]);
     }
   }
-  strings = $("#strings").val();
-  frets = $("#frets").val();
+  strings = parseInt($("#strings").val());
+  frets = parseInt($("#frets").val());
   tuning = [];
   for(var i=1; i<=strings; i++) {
     tuning.push($('#tuning_string_'+i).val());
   }
-  desired_notes = $("#notes").val();
-  max_fret_jump = $("#max_fret_jump").val();
-  max_string_jump = $("#max_string_jump").val();
+  desired_notes = parseInt($("#notes").val());
+  max_fret_jump = parseInt($("#max_fret_jump").val());
+  max_string_jump = parseInt($("#max_string_jump").val());
   nice_print = $('[id="nice_print_checkbox"]').is(":checked");
   tab_type = $("#tab_type").val();
+  random_notes= $('[id="random_notes_checkbox"]').is(":checked");
 }
 
 
@@ -245,11 +248,20 @@ function generate_notes() {
   var init_str = getRandom(1, strings);
   var init_fret = getRandom(0, frets);
   var last = Note(init_str, init_fret);
-  for(int i=0; i<desired_notes; i++) {  //this loop takes care of adding the correct number of notes to the riff
-    if(prob(5)) {   //probability of a random note
-
+  for(var i=0; i<desired_notes; i++) {  //this loop takes care of adding the correct number of notes to the riff
+    if(random_notes && prob(100)) {   //probability of a random note
+      var new_note;
+      if(prob(70)) {    //not so random note
+        new_note = get_random_note(last, last.string);
+      } else if(prob(50)) {   //more random note
+        new_note = get_random_note(last);
+      } else {  //completely random note
+        new_note = get_random_note();
+      }
+      tab.push(new_note);
+      last = new_note;
     } else {
-      
+
     }
   }
 }
@@ -269,6 +281,33 @@ function generate_notes_and_chords() {
 
 function generate_chords() {
 
+}
+
+//return a Note object, last is the previous note in the tab, str is the desired string of the note
+function get_random_note(last = null, str = null) {
+  if(last==null) {
+    var s = getRandom(1, strings);
+    var f = getRandom(0, frets);
+    var d = getRandom(1, 4);
+    return Note(s, f, d);
+  } else if(str==null) {
+    var min = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
+    var max = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+    var s = getRandom(1, strings);
+    var f = getRandom(min, max);
+    var d = getRandom(1, 4);
+    return Note(s, f, d);
+  } else {
+    //console.log("a: "+frets+"\nb: "+last.fret+"\nc: "+max_fret_jump);
+    var min = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
+    var max = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+    //console.log("b + c > a: "+(last.fret + max_fret_jump > frets));
+    //console.log("min: "+min+"\nmax: "+max);
+    var s = str;
+    var f = getRandom(min, max);
+    var d = getRandom(1, 4);
+    return Note(s, f, d);
+  }
 }
 
 //------------------------------------
