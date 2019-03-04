@@ -249,7 +249,7 @@ function generate_notes() {
   var init_fret = getRandom(0, frets);
   var last = Note(init_str, init_fret);
   for(var i=0; i<desired_notes; i++) {  //this loop takes care of adding the correct number of notes to the riff
-    if(random_notes && prob(100)) {   //probability of a random note
+    if(random_notes && prob(5)) {   //probability of a random note
       var new_note;
       if(prob(70)) {    //not so random note
         new_note = get_random_note(last, last.string);
@@ -258,11 +258,11 @@ function generate_notes() {
       } else {  //completely random note
         new_note = get_random_note();
       }
-      tab.push(new_note);
-      last = new_note;
     } else {
 
     }
+    tab.push(new_note);
+    last = new_note;
   }
 }
 
@@ -283,7 +283,7 @@ function generate_chords() {
 
 }
 
-//return a Note object, last is the previous note in the tab, str is the desired string of the note
+//returns a Note object, last is the previous note in the tab, str is the desired string of the note
 function get_random_note(last = null, str = null) {
   if(last==null) {
     var s = getRandom(1, strings);
@@ -298,16 +298,28 @@ function get_random_note(last = null, str = null) {
     var d = getRandom(1, 4);
     return Note(s, f, d);
   } else {
-    //console.log("a: "+frets+"\nb: "+last.fret+"\nc: "+max_fret_jump);
     var min = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
     var max = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
-    //console.log("b + c > a: "+(last.fret + max_fret_jump > frets));
-    //console.log("min: "+min+"\nmax: "+max);
     var s = str;
     var f = getRandom(min, max);
     var d = getRandom(1, 4);
     return Note(s, f, d);
   }
+}
+
+//returns a modally correct Note object, last is the previous note in the tab
+function get_smart_note(last) {
+  var possible_new_notes = [];
+  var min_fret = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
+  var max_fret = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+  for(var f=min_fret; f<=max_fret; f++) {
+    
+  }
+}
+
+//returns a list of modally correct note in the given interval
+function get_mode_notes(min, max) {
+
 }
 
 //------------------------------------
