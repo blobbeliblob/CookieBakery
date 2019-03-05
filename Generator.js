@@ -234,21 +234,21 @@ function printTab(npr = 15) {
 
 function generate() {
   tab.length = 0;   //resets tab, this can be changed to tab = []; if needed
-  if(tab_type=="notes") {
-    generate_notes();
-  } else if(tab_type=="notes & chords") {
-    generate_notes_and_chords();
-  } else if(tab_type=="chords") {
-    generate_chords();
-  }
-}
-
-function generate_notes() {
   //start note, this will not be added to the tab, but used as a reference for the first note
   var init_str = getRandom(1, strings);
   var init_fret = getRandom(0, frets);
   var last = Note(init_str, init_fret);
-  for(var i=0; i<desired_notes; i++) {  //this loop takes care of adding the correct number of notes to the riff
+  if(tab_type=="notes") {
+    generate_notes(last);
+  } else if(tab_type=="notes & chords") {
+    generate_notes_and_chords(last);
+  } else if(tab_type=="chords") {
+    generate_chords(last);
+  }
+}
+
+function generate_notes(last) {
+  for(var i=0; i<desired_notes; i++) {
     var new_note;
     if(random_notes && prob(5)) {   //probability of a random note
       if(prob(70)) {    //not so random note
@@ -266,21 +266,16 @@ function generate_notes() {
   }
 }
 
-function generate_notes_and_chords() {
-  for(var i=0; i<20; i++) {
-    var note = Note(i%2+1,i,i%2+2);
-    var chord = Chord([Note(i%2+1,i),Note(i%2+2,i)],i%2+1);
-    tab.push(note);
-    tab.push(chord);
-  }
-  tab.push(Note(1,0,1));
-  tab.push(Note(1,0,2));
-  tab.push(Note(1,0,3));
-  tab.push(Note(1,0));
+function generate_notes_and_chords(last) {
+
 }
 
-function generate_chords() {
-
+function generate_chords(last) {
+  for(var i=0; i<desired_notes; i++) {
+    var new_chord = get_smart_chord(last);
+    tab.push(new_chord);
+    last = new_chord;
+  }
 }
 
 //returns a Note object, last is the previous note in the tab, str is the desired string of the note
@@ -309,17 +304,21 @@ function get_random_note(last = null, str = null) {
 
 //returns a modally correct Note object, last is the previous note in the tab
 function get_smart_note(last) {
-  var min_fret = get_fret_interval(last).min;
-  var max_fret = get_fret_interval(last).max;
-  var min_str = get_string_interval(last).min;
-  var max_str = get_string_interval(last).max;
+  var fret_int = get_fret_interval(last);
+  var min_fret = fret_int.min;
+  var max_fret = fret_int.max;
+  var str_int = get_string_interval(last);
+  var min_str = str_int.min;
+  var max_str = str_int.max;
   var mode_notes = get_mode_notes(min_str, max_str, min_fret, max_fret);
+  var new_note;
   if(mode_notes.length == 0)  {
-    return get_random_note(last, getRandom(min_str,max_str));
+    new_note = get_random_note(last, getRandom(min_str,max_str));
   } else {
-    var new_note = mode_notes[getRandom(0, mode_notes.length-1)];
-    return new_note;
+    new_note = mode_notes[getRandom(0, mode_notes.length-1)];
   }
+  //new_note.duration = get_smart_duration();
+  return new_note;
 }
 
 //returns a list of modally correct note in the given interval
@@ -365,6 +364,58 @@ function get_fret_interval(last) {
 //returns a duration based on the duration of previous notes in the tab
 function get_smart_duration() {
 
+}
+
+//returns a Chord object, last is the previous Note/Chord object in the tab
+function get_smart_chord(last) {
+  var new_chord = [];
+  var size = get_chord_size(last);
+  var start_str = get_chord_start_string(size);
+  var fret_int = get_chord_fret_interval(last);
+  var min_fret = fret_int.min;
+  var max_fret = fret_int.max;
+  for(var i=0; i<size; i++) {
+    var new_note;
+    var mode_notes = get_mode_notes(start_str + i, start_str + i, min_fret, max_fret);
+    if(mode_notes.length == 0) {
+      new_note = Note(start_str + i, getRandom(min_fret,max_fret));
+    } else {
+      new_note = mode_notes[getRandom(0, mode_notes.length-1)];
+    }
+    //new_chord.duration = get_smart_duration();
+    new_chord.push(new_note);
+  }
+  return Chord(new_chord);
+}
+
+//returns an integer describing the amount of notes in the Chord object to be generated, last is the previous Note/Chord object in the tab
+function get_chord_size(last) {
+  var size;
+  if(last.type == "note") {
+    size = prob(50) ? 2 : 3;
+  } else if(last.type == "chord") {
+    var min_size = (last.chord.length - 1 < 2) ? 2 : (last.chord.length - 1);
+    var max_size = (last.chord.length + 1 > strings) ? strings : (last.chord.length + 1);
+    size = getRandom(min_size, max_size);
+  }
+  return size;
+}
+
+//returns the starting string for the chord, size is the size of the new chord
+function get_chord_start_string(size) {
+  return getRandom(1, strings - size + 1);
+}
+
+//returns a smart chord fret interval, last is the previous Note/Chord object in the tab
+function get_chord_fret_interval(last) {
+  if(last.type == "chord") {
+    last = last.chord[getRandom(0, last.chord.length - 1)];
+  }
+  var down = prob(50) ? 1 : 2;
+  var up = (down == 1) ? 2 : 1;
+  var min_fret = (last.fret - down < 0) ? 0 : (last.fret - down);
+  var max_fret = (last.fret + up > frets) ? frets : (last.fret + up);
+  return {min: min_fret, max: max_fret};
 }
 
 //------------------------------------
