@@ -463,3 +463,23 @@ $("#nice_print_checkbox").change(function() {
   }
   printTab();
 });
+
+//------------------------------------
+//AFTERMATH
+//------------------------------------
+
+//when the save button is clicked
+$("#button_save").click(function() {
+  download_tab();
+});
+
+function download_tab() {
+  var data = $("#div_tab").text();
+  var file = new Blob([data], {type: 'text/plain'});
+  var link = document.createElement("a");
+  var url = URL.createObjectURL(file);
+  link.href = url;
+  link.download = "tab.txt";
+  document.body.appendChild(link);
+  link.click();
+}

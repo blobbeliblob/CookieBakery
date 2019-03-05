@@ -146,7 +146,7 @@ CHECKBOX DESIGN
 BUTTON DESIGN
 */
 
-#button_generate {
+.button {
   background-color: transparent;
   border: 1px solid #ccc;
   padding: 5px 5px;
