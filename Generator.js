@@ -313,13 +313,41 @@ function get_smart_note(last) {
   var min_fret = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
   var max_fret = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
   for(var f=min_fret; f<=max_fret; f++) {
-    
+
   }
 }
 
 //returns a list of modally correct note in the given interval
 function get_mode_notes(min, max) {
+  var mode_notes = [];
+  var possible_notes = [];
+  for(var f=min_fret; f<=max_fret; f++) {
+    for(var s=1; s<=strings; s++) {
+      if(mode.includes(Note(s, f).name)) {
+        possible_notes
+      }
+    }
+  }
+}
 
+//returns a smart string interval, last is the previous note in the tab
+function get_string_interval(last) {
+  var min_str;
+  var max_str;
+  if(max_string_jump==0) {
+    min_str = last.string;
+    max_str = last.string;
+  } else if(prob(80)) {
+    min_str = (last.string - 1 < 1) ? 1 : (last.string - 1);
+    max_str = (last.string + 1 > strings) ? strings : (last.string + 1);
+  } else if(prob(80+15) && max_string_jump>=2) {
+    min_str = (last.string - 2 < 1) ? 1 : (last.string - 2);
+    max_str = (last.string + 2 > strings) ? strings : (last.string + 2);
+  } else {
+    min_str = (last.string - max_string_jump < 1) ? 1 : (last.string - max_string_jump);
+    max_str = (last.string + max_string_jump > strings) ? strings : (last.string + max_string_jump);
+  }
+  return {min: min_str, max: max_str};
 }
 
 //------------------------------------
