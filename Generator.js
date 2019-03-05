@@ -266,8 +266,33 @@ function generate_notes(last) {
   }
 }
 
+//this is just a combination of generate_notes and generate_chords
 function generate_notes_and_chords(last) {
-
+  for(var i=0; i<desired_notes; i++) {
+    if(prob(75)) {  //note
+      if(last.type == "chord") {
+        last = last.chord[getRandom(0, last.chord.length - 1)];
+      }
+      var new_note;
+      if(random_notes && prob(5)) {   //probability of a random note
+        if(prob(70)) {    //not so random note
+          new_note = get_random_note(last, last.string);
+        } else if(prob(50)) {   //more random note
+          new_note = get_random_note(last);
+        } else {  //completely random note
+          new_note = get_random_note();
+        }
+      } else {
+        new_note = get_smart_note(last);
+      }
+      tab.push(new_note);
+      last = new_note;
+    } else {  //chord
+      var new_chord = get_smart_chord(last);
+      tab.push(new_chord);
+      last = new_chord;
+    }
+  }
 }
 
 function generate_chords(last) {
