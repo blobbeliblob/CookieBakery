@@ -249,8 +249,8 @@ function generate_notes() {
   var init_fret = getRandom(0, frets);
   var last = Note(init_str, init_fret);
   for(var i=0; i<desired_notes; i++) {  //this loop takes care of adding the correct number of notes to the riff
+    var new_note;
     if(random_notes && prob(5)) {   //probability of a random note
-      var new_note;
       if(prob(70)) {    //not so random note
         new_note = get_random_note(last, last.string);
       } else if(prob(50)) {   //more random note
@@ -259,7 +259,7 @@ function generate_notes() {
         new_note = get_random_note();
       }
     } else {
-
+      new_note = get_smart_note(last);
     }
     tab.push(new_note);
     last = new_note;
@@ -309,13 +309,16 @@ function get_random_note(last = null, str = null) {
 
 //returns a modally correct Note object, last is the previous note in the tab
 function get_smart_note(last) {
-  var possible_new_notes = [];
   var min_fret = get_fret_interval(last).min;
   var max_fret = get_fret_interval(last).max;
   var min_str = get_string_interval(last).min;
   var max_str = get_string_interval(last).max;
-  for(var f=min_fret; f<=max_fret; f++) {
-
+  var mode_notes = get_mode_notes(min_str, max_str, min_fret, max_fret);
+  if(mode_notes.length == 0)  {
+    return get_random_note(last, getRandom(min_str,max_str));
+  } else {
+    var new_note = mode_notes[getRandom(0, mode_notes.length-1)];
+    return new_note;
   }
 }
 
@@ -357,6 +360,11 @@ function get_fret_interval(last) {
   var min_fret = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
   var max_fret = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
   return {min: min_fret, max: max_fret};
+}
+
+//returns a duration based on the duration of previous notes in the tab
+function get_smart_duration() {
+
 }
 
 //------------------------------------
