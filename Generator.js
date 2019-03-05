@@ -291,15 +291,15 @@ function get_random_note(last = null, str = null) {
     var d = getRandom(1, 4);
     return Note(s, f, d);
   } else if(str==null) {
-    var min = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
-    var max = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+    var min = get_fret_interval(last).min;
+    var max = get_fret_interval(last).max;
     var s = getRandom(1, strings);
     var f = getRandom(min, max);
     var d = getRandom(1, 4);
     return Note(s, f, d);
   } else {
-    var min = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
-    var max = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+    var min = get_fret_interval(last).min;
+    var max = get_fret_interval(last).max;
     var s = str;
     var f = getRandom(min, max);
     var d = getRandom(1, 4);
@@ -310,24 +310,26 @@ function get_random_note(last = null, str = null) {
 //returns a modally correct Note object, last is the previous note in the tab
 function get_smart_note(last) {
   var possible_new_notes = [];
-  var min_fret = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
-  var max_fret = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+  var min_fret = get_fret_interval(last).min;
+  var max_fret = get_fret_interval(last).max;
+  var min_str = get_string_interval(last).min;
+  var max_str = get_string_interval(last).max;
   for(var f=min_fret; f<=max_fret; f++) {
 
   }
 }
 
 //returns a list of modally correct note in the given interval
-function get_mode_notes(min, max) {
+function get_mode_notes(min_str, max_str, min_fret, max_fret) {
   var mode_notes = [];
-  var possible_notes = [];
   for(var f=min_fret; f<=max_fret; f++) {
-    for(var s=1; s<=strings; s++) {
+    for(var s=min_str; s<=max_str; s++) {
       if(mode.includes(Note(s, f).name)) {
-        possible_notes
+        mode_notes.push(Note(s, f));
       }
     }
   }
+  return mode_notes;
 }
 
 //returns a smart string interval, last is the previous note in the tab
@@ -348,6 +350,13 @@ function get_string_interval(last) {
     max_str = (last.string + max_string_jump > strings) ? strings : (last.string + max_string_jump);
   }
   return {min: min_str, max: max_str};
+}
+
+//returns a smart fret interval, last is the previous note in the tab
+function get_fret_interval(last) {
+  var min_fret = (last.fret - max_fret_jump < 0) ? 0 : (last.fret - max_fret_jump);
+  var max_fret = (last.fret + max_fret_jump > frets) ? frets : (last.fret + max_fret_jump);
+  return {min: min_fret, max: max_fret};
 }
 
 //------------------------------------

@@ -77,7 +77,7 @@ function set_notes_select() {
 function set_max_string_jump_select() {
   var max_string_number = "";
   var number_of_strings = $("#strings").val();
-  for(var i=1; i<=number_of_strings-1; i++) {
+  for(var i=0; i<=number_of_strings-1; i++) {
     max_string_number += '<option value="'+i+'">'+i+'</option>';
   }
   $('#max_string_jump').html(max_string_number);
