@@ -473,6 +473,7 @@ $("#button_save").click(function() {
   download_tab();
 });
 
+//download the tab
 function download_tab() {
   var data = $("#div_tab").text();
   var file = new Blob([data], {type: 'text/plain'});
@@ -482,4 +483,38 @@ function download_tab() {
   link.download = "tab.txt";
   document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
+}
+
+//------------------------------------
+//AUDIO
+//------------------------------------
+
+$("#button_play").click(function() {
+  playSweep();
+});
+
+var instrument = piano;
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+let wave = audioCtx.createPeriodicWave(instrument.real, instrument.imag);
+
+function playSweep() {
+  let sweepLength = 1;
+  let attackTime = 0.2;
+  let releaseTime = 0.5;
+  let osc = audioCtx.createOscillator();
+  //osc.setPeriodicWave(wave);
+  osc.type = 'sine';
+  osc.frequency.value = 440;
+
+  let sweepEnv = audioCtx.createGain();
+  sweepEnv.gain.cancelScheduledValues(audioCtx.currentTime);
+  sweepEnv.gain.setValueAtTime(0, audioCtx.currentTime);
+  sweepEnv.gain.linearRampToValueAtTime(1, audioCtx.currentTime + attackTime);
+  sweepEnv.gain.linearRampToValueAtTime(0, audioCtx.currentTime + sweepLength - releaseTime);
+
+  osc.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + sweepLength);
 }

@@ -9,6 +9,7 @@
     <title>CookieBakery</title>
     <link rel="stylesheet" href="CookieBakery.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="wavetable.js"></script>
   </head>
   <body>
     <div id="div_generator">
@@ -92,7 +93,7 @@
       <div id="gen_set_3" class="generator_settings">
         <!-- play button -->
         <div id="div_button_play">
-          <button type="button" id="button_play" class="button" title="Play the tab">Play</button>
+          <button type="button" id="button_play" class="button" title="Play the tab" data-playing="false" role="switch" aria-checked="false">Play/Pause</button>
         </div>
         <!-- save button -->
         <div id="div_button_save">
