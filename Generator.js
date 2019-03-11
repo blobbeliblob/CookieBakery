@@ -475,7 +475,22 @@ $("#button_save").click(function() {
 
 //download the tab
 function download_tab() {
-  var data = $("#div_tab").text();
+  var data = $("#tab_info").text() + '\n' + '\n' + $("#tab_sheet").text();
+  for(var i=0, str=1; i<data.length; i++) {
+    if(data[i] == '|') {
+      if(data[i-1] == '|') {
+        data = data.slice(0, i) + '\n' + data.slice(i);
+        i++;  //increase i to compensate for the newline character
+        if(str == strings) {
+          data = data.slice(0, i) + '\n' + data.slice(i);
+          i++;
+          str = 1;
+        } else {
+          str++;
+        }
+      }
+    }
+  }
   var file = new Blob([data], {type: 'text/plain'});
   var link = document.createElement("a");
   var url = URL.createObjectURL(file);
@@ -494,17 +509,14 @@ $("#button_play").click(function() {
   playSweep();
 });
 
-var instrument = piano;
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
-let wave = audioCtx.createPeriodicWave(instrument.real, instrument.imag);
 
 function playSweep() {
   let sweepLength = 1;
   let attackTime = 0.2;
   let releaseTime = 0.5;
   let osc = audioCtx.createOscillator();
-  //osc.setPeriodicWave(wave);
   osc.type = 'sine';
   osc.frequency.value = 440;
 
