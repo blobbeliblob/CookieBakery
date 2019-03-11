@@ -505,28 +505,28 @@ function download_tab() {
 //AUDIO
 //------------------------------------
 
-$("#button_play").click(function() {
-  playSweep();
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
+const audio_element = document.createElement('audio');
+audio_element.src = "tab25.wav";
+const track = audioContext.createMediaElementSource(audio_element);
+track.connect(audioContext.destination);
+
+const button_play = document.querySelector('#button_play');
+
+button_play.addEventListener('click', function() {
+  if(audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+  if (this.dataset.playing === 'false') {
+    audio_element.play();
+    this.dataset.playing = 'true';
+  } else if(this.dataset.playing === 'true') {
+    audio_element.pause();
+    this.dataset.playing = 'false';
+  }
 });
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
-
-function playSweep() {
-  let sweepLength = 1;
-  let attackTime = 0.2;
-  let releaseTime = 0.5;
-  let osc = audioCtx.createOscillator();
-  osc.type = 'sine';
-  osc.frequency.value = 440;
-
-  let sweepEnv = audioCtx.createGain();
-  sweepEnv.gain.cancelScheduledValues(audioCtx.currentTime);
-  sweepEnv.gain.setValueAtTime(0, audioCtx.currentTime);
-  sweepEnv.gain.linearRampToValueAtTime(1, audioCtx.currentTime + attackTime);
-  sweepEnv.gain.linearRampToValueAtTime(0, audioCtx.currentTime + sweepLength - releaseTime);
-
-  osc.connect(audioCtx.destination);
-  osc.start();
-  osc.stop(audioCtx.currentTime + sweepLength);
-}
+audio_element.addEventListener('ended', () => {
+    $("#button_play").dataset.playing = 'false';
+}, false);
