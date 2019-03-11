@@ -115,7 +115,7 @@ function tabInfo() {
       tab_info += ', ';
     }
   }
-  tab_info += '</p><br>';
+  tab_info += '</p><br><br>';
   return tab_info;
 }
 
@@ -342,7 +342,7 @@ function get_smart_note(last) {
   } else {
     new_note = mode_notes[getRandom(0, mode_notes.length-1)];
   }
-  //new_note.duration = get_smart_duration();
+  new_note.duration = get_smart_duration();
   return new_note;
 }
 
@@ -388,7 +388,7 @@ function get_fret_interval(last) {
 
 //returns a duration based on the duration of previous notes in the tab
 function get_smart_duration() {
-
+  return 2;
 }
 
 //returns a Chord object, last is the previous Note/Chord object in the tab
@@ -407,7 +407,7 @@ function get_smart_chord(last) {
     } else {
       new_note = mode_notes[getRandom(0, mode_notes.length-1)];
     }
-    //new_chord.duration = get_smart_duration();
+    new_chord.duration = get_smart_duration();
     new_chord.push(new_note);
   }
   return Chord(new_chord);
