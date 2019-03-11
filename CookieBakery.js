@@ -179,6 +179,12 @@ function set_tab_type_select() {
   $("#tab_type").html(tab_type_select);
 }
 
+//set the tempo display
+function set_tempo_display() {
+  var tempo_value = $("#tempo").val();
+  $("#tempo_display").html(tempo_value);
+}
+
 //initialize fields
 set_root_select();
 set_mode_select();
@@ -189,6 +195,7 @@ set_max_string_jump_select();
 set_max_fret_jump_select();
 set_tuning_select();
 set_tab_type_select();
+set_tempo_display();
 
 //set nice print to its default value
 $("#nice_print_checkbox").prop("checked", default_nice_print);
@@ -217,4 +224,9 @@ $("#frets").change(function() {set_max_fret_jump_select();update_element("#frets
 //update the tuning select when it is changed
 $("#div_tuning").change(function() {
   update_element("#div_tuning");
+});
+
+//update the tempo display when the slider is moved
+$("#tempo").change(function() {
+  set_tempo_display();
 });
