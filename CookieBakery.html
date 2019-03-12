@@ -8,117 +8,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CookieBakery</title>
     <link rel="stylesheet" href="CookieBakery.css">
-    <script type="text/javascript" language="Javascript" src="jquery.js"></script>
+    <script type="text/javascript" language="Javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
     <div id="div_generator">
-    <div id="div_settings_and_info">
+      <div id="div_settings_and_info">
 
-      <div id="div_page_info" class="settings_and_info">
-        <a href="https://github.com/blobbeliblob/CookieBakery" target="_blank">
-          <img src="GitHub-Mark/PNG/GitHub-Mark-120px-plus.png" alt="GitHub" title="Find the source code on GitHub" style="width:48px;height:48px;border:0;">
-        </a>
-        <br><br>
-        made by <br>blobbeliblob
-      </div>
+        <div id="div_page_info" class="settings_and_info">
+          <a href="https://github.com/blobbeliblob/CookieBakery" target="_blank">
+            <img src="GitHub-Mark/PNG/GitHub-Mark-120px-plus.png" alt="GitHub" title="Find the source code on GitHub" style="width:48px;height:48px;border:0;">
+          </a>
+          <br><br>
+          made by <br>blobbeliblob
+        </div>
 
-      <div id="gen_set_3" class="settings_and_info">
-        <!-- play button -->
-        <div id="div_button_play">
-          <button type="button" id="button_play" class="button" title="Play the tab" data-playing="false" role="switch" aria-checked="false">Play/Pause</button>
+        <div id="gen_set_3" class="settings_and_info">
+          <!-- play button -->
+          <div id="div_button_play">
+            <button type="button" id="button_play" class="button" title="Play the tab" data-playing="false" role="switch" aria-checked="false">Play/Pause</button>
+          </div>
+          <!-- tempo slider -->
+          <div id="div_tempo_slider">
+            <p>Tempo: <span id="tempo_display"></span> bpm</p>
+            <input name="tempo" id="tempo" class=".range" type="range" min="40" max="220" value="100" step="1" />
+          </div>
+          <!-- save button -->
+          <div id="div_button_save">
+            <button type="button" id="button_save" class="button" title="Save the tab">Save</button>
+          </div>
         </div>
-        <!-- tempo slider -->
-        <div id="div_tempo_slider">
-          <p>Tempo: <span id="tempo_display"></span> bpm</p>
-          <input name="tempo" id="tempo" class=".range" type="range" min="40" max="220" value="100" step="1" />
-        </div>
-        <!-- save button -->
-        <div id="div_button_save">
-          <button type="button" id="button_save" class="button" title="Save the tab">Save</button>
-        </div>
-      </div>
 
-      <div id="gen_set_2" class="settings_and_info">
-        <!-- number of strings -->
-        <div id="div_strings">
-          <p>Number of strings</p>
-          <select required id="strings" title="Number of strings on the instrument" class="select">
-          </select>
-        </div>
-        <!-- number of frets -->
-        <div id="div_frets">
-          <p>Number of frets</p>
-          <select required id="frets" title="Number of frets on the instrument" class="select">
-          </select>
-        </div>
-        <!-- number of notes in the melody -->
-        <div id="div_notes">
-          <p>Number of notes</p>
-          <select required id="notes" title="Number of notes in the generated melody" class="select">
-          </select>
-        </div>
-        <!-- maximum jump between strings -->
-        <div id="div_max_string_jump">
-          <p>Maximum string jump</p>
-          <select required id="max_string_jump" title="The largest possible string jump between consecutive notes" class="select">
-          </select>
-        </div>
-        <!-- maximum jump between frets -->
-        <div id="div_max_fret_jump">
-          <p>Maximum fret jump</p>
-          <select required id="max_fret_jump" title="The largest possible fret jump between consecutive notes" class="select">
-          </select>
-        </div>
-        <!-- type of tab -->
-        <div id="div_tab_type">
-          <p>Type of tab</p>
-          <select required id="tab_type" title="The type of tab to be generated" class="select">
-          </select>
-        </div>
-        <!-- random notes -->
-        <div id="div_random_notes">
-          <label for="random_notes_checkbox">Random notes</label>
-          <input type="checkbox" name="random_notes_checkbox" title="The generated tab may include random notes not in the selected mode" id="random_notes_checkbox" class="checkbox" value="">
-        </div>
-      </div>
-
-      <div id="gen_set_1" class="settings_and_info">
-        <!-- root selection -->
-        <div id="div_root">
-          <p>Root</p>
-          <select required id="root" title="The root of the mode" class="select">
-          </select>
-        </div>
-        <!-- mode selection -->
-        <div id="div_mode">
-          <p>Mode</p>
-          <div id="div_mode_select">
-            <select id="mode_select" title="The mode to be used" class="select">
+        <div id="gen_set_2" class="settings_and_info">
+          <!-- number of strings -->
+          <div id="div_strings">
+            <p>Number of strings</p>
+            <select required id="strings" title="Number of strings on the instrument" class="select">
             </select>
           </div>
-          <div id="div_mode_checkboxes">
+          <!-- number of frets -->
+          <div id="div_frets">
+            <p>Number of frets</p>
+            <select required id="frets" title="Number of frets on the instrument" class="select">
+            </select>
+          </div>
+          <!-- number of notes in the melody -->
+          <div id="div_notes">
+            <p>Number of notes</p>
+            <select required id="notes" title="Number of notes in the generated melody" class="select">
+            </select>
+          </div>
+          <!-- maximum jump between strings -->
+          <div id="div_max_string_jump">
+            <p>Maximum string jump</p>
+            <select required id="max_string_jump" title="The largest possible string jump between consecutive notes" class="select">
+            </select>
+          </div>
+          <!-- maximum jump between frets -->
+          <div id="div_max_fret_jump">
+            <p>Maximum fret jump</p>
+            <select required id="max_fret_jump" title="The largest possible fret jump between consecutive notes" class="select">
+            </select>
+          </div>
+          <!-- type of tab -->
+          <div id="div_tab_type">
+            <p>Type of tab</p>
+            <select required id="tab_type" title="The type of tab to be generated" class="select">
+            </select>
+          </div>
+          <!-- random notes -->
+          <div id="div_random_notes">
+            <label for="random_notes_checkbox">Random notes</label>
+            <input type="checkbox" name="random_notes_checkbox" title="The generated tab may include random notes not in the selected mode" id="random_notes_checkbox" class="checkbox" value="">
           </div>
         </div>
-        <!-- tuning selection -->
-        <div id="div_tuning">
+
+        <div id="gen_set_1" class="settings_and_info">
+          <!-- root selection -->
+          <div id="div_root">
+            <p>Root</p>
+            <select required id="root" title="The root of the mode" class="select">
+            </select>
+          </div>
+          <!-- mode selection -->
+          <div id="div_mode">
+            <p>Mode</p>
+            <div id="div_mode_select">
+              <select id="mode_select" title="The mode to be used" class="select">
+              </select>
+            </div>
+            <div id="div_mode_checkboxes">
+            </div>
+          </div>
+          <!-- tuning selection -->
+          <div id="div_tuning">
+          </div>
+          <!-- generate button -->
+          <div id="div_button_generate">
+            <button type="button" id="button_generate" class="button" title="Generate a new tab">Generate</button>
+          </div>
+          <!-- fancier displaying of the tab -->
+          <div id="div_nice_print">
+            <label for="nice_print_checkbox">Print nicely</label>
+            <input type="checkbox" name="nice_print_checkbox" title="Make the output a bit nicer" id="nice_print_checkbox" class="checkbox" value="">
+          </div>
         </div>
-        <!-- generate button -->
-        <div id="div_button_generate">
-          <button type="button" id="button_generate" class="button" title="Generate a new tab">Generate</button>
-        </div>
-        <!-- fancier displaying of the tab -->
-        <div id="div_nice_print">
-          <label for="nice_print_checkbox">Print nicely</label>
-          <input type="checkbox" name="nice_print_checkbox" title="Make the output a bit nicer" id="nice_print_checkbox" class="checkbox" value="">
-        </div>
+
       </div>
+      <script type="text/javascript" src="CookieBakery.js"></script>
 
+      <div id="div_tab">
+      </div>
+      <script type="text/javascript" src="Generator.js"></script>
     </div>
-    <script type="text/javascript" src="CookieBakery.js"></script>
-
-    <div id="div_tab">
-    </div>
-    <script type="text/javascript" src="Generator.js"></script>
-  </div>
   </body>
 </html>
