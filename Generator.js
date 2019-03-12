@@ -36,7 +36,7 @@ function initialize() {
   root = $("#root").val();
   tonics = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
   mode = [];
-  for(var i=0; i<tonics.length; i++) {
+  for(let i=0; i<tonics.length; i++) {
     if($('[id="'+tonics[i]+'_checkbox"]').is(":checked")) {
       mode.push(tonics[i]);
     }
@@ -44,7 +44,7 @@ function initialize() {
   strings = parseInt($("#strings").val());
   frets = parseInt($("#frets").val());
   tuning = [];
-  for(var i=1; i<=strings; i++) {
+  for(let i=1; i<=strings; i++) {
     tuning.push($('#tuning_string_'+i).val());
   }
   desired_notes = parseInt($("#notes").val());
@@ -74,9 +74,8 @@ function Chord(chord, d = 1) {
 //returns the name of a note on a given string and fret
 function getNoteName(s, f) {
   var stringName = $('#tuning_string_'+s).val();
-  var openStringIndex = tonics.indexOf(stringName);
   var noteName = stringName;
-  for(var i=0; i<f; i++) {
+  for(let i=0; i<f; i++) {
     if(noteName == "G#") {
       noteName = "A";
     } else {
@@ -109,7 +108,7 @@ function updateElement(element_id) {
 function tabInfo() {
   var tab_info = '<p id="tab_info">';
   tab_info += 'tuning: ';
-  for(var i=0; i<tuning.length; i++) {
+  for(let i=0; i<tuning.length; i++) {
     tab_info += tuning[i];
     if(i < tuning.length - 1) {
       tab_info += ', ';
@@ -127,8 +126,8 @@ function printTab(npr = 15) {
   tab_text += '<p id= "tab_sheet">';    //create a <p> element for the tab itself
   var tab_rows = Math.ceil(tab.length/notes_per_row);   //number of tab rows
   var tab_row_elements = '';
-  for(var row=0; row<tab_rows; row++) {   //for each tab row
-    for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
+  for(let row=0; row<tab_rows; row++) {   //for each tab row
+    for(let i=1; i<=strings; i++) {   //for each string, notice the start on i=1
       tab_row_elements += '<span id="row_'+row+'_string_'+i+'" class="tab_row"></span><br>';  //add a <span> element for each string
     }
     tab_row_elements += '<br><br>';   //empty row between tab rows
@@ -138,15 +137,15 @@ function printTab(npr = 15) {
   $("#div_tab").html(tab_text);   //add the new elements to the "#div_tab" element
   var note_index = 0;   //current note in the tab
   var nice_print_length = 0;    //this is used to determine the longest string, used for the nice print hack
-  for(var row=0; row<tab_rows; row++) {   //for each tab row
+  for(let row=0; row<tab_rows; row++) {   //for each tab row
     var string_list = [];    //this list is for containing a string for each string
-    for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
+    for(let i=1; i<=strings; i++) {   //for each string, notice the start on i=1
       string_list[i-1] = '|---';    //add the default start to the string
     }
-    for(var i=0; i<notes_per_row && note_index < tab.length; i++) {
+    for(let i=0; i<notes_per_row && note_index < tab.length; i++) {
       if(tab[note_index].type == "note") {    //if the note type is a note
         var note = tab[note_index];   //the note
-        for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
+        for(let k=1; k<=strings; k++) {   //for each string, notice the start on i=1
           if(note.string == k) {    //if the note is located on the current string
             string_list[k-1] += note.fret.toString() + '-' + '--'.repeat(note.duration);   //add the note to the string
           } else {
@@ -161,14 +160,14 @@ function printTab(npr = 15) {
         var occupied_strings = [];    //list used to check if a string already has a note
         var double_digit = false;   //used to determine if the chord has notes with double digit frets
         //this for loop check for double digit frets in the chord
-        for(var k=0; k<chord.chord.length; k++) {   //for each note in the chord
+        for(let k=0; k<chord.chord.length; k++) {   //for each note in the chord
           var note = chord.chord[k];    //the note
           if(note.fret.toString().length == 2) {    //if the fret of the note in the chord has two digits
             double_digit = true;    //the chord has a double digit fret
           }
         }
         //this for loop adds the note to corresponding strings
-        for(var k=0; k<chord.chord.length; k++) {   //for each note in the chord
+        for(let k=0; k<chord.chord.length; k++) {   //for each note in the chord
           var note = chord.chord[k];    //the note
           if(!occupied_strings.includes(note.string)) {   //if the string does not already have a note
             if(double_digit == true) {    //if the chord has notes with double digit frets
@@ -184,7 +183,7 @@ function printTab(npr = 15) {
           }
         }
         //this for loop adds empty space to corresponding strings
-        for(var k=1; k<=strings; k++) {   //for each string, notice the start on i=1
+        for(let k=1; k<=strings; k++) {   //for each string, notice the start on i=1
           if(!occupied_strings.includes(k)) {   //if the string does not already have a note
             string_list[k-1] += '--' + '--'.repeat(chord.duration);   //add an empty space
             if(double_digit == true) {    //if the chord has notes with double digit frets
@@ -197,7 +196,7 @@ function printTab(npr = 15) {
       note_index++;   //move to the next note in the tab
     }
     //this for loop adds the strings to corresponding <span> elements
-    for(var i=1; i<=strings; i++) {   //for each string, notice the start on i=1
+    for(let i=1; i<=strings; i++) {   //for each string, notice the start on i=1
       //string_list[i-1] += '|';    //add a final line to the end of the tab row
       $('#row_'+row+'_string_'+i).html(string_list[i-1]);   //add the string text to the corresponding <span> element
     }
@@ -205,8 +204,8 @@ function printTab(npr = 15) {
   //this is the nice print "pro hacker" fix
   if(nice_print == true) {
     //determine the length of the longest string
-    for(var row=0; row<tab_rows; row++) {
-      for(var i=1; i<=strings; i++) {
+    for(let row=0; row<tab_rows; row++) {
+      for(let i=1; i<=strings; i++) {
         var str = $('#row_'+row+'_string_'+i).text();
         if(str.length > nice_print_length) {
           nice_print_length = str.length;
@@ -214,8 +213,8 @@ function printTab(npr = 15) {
       }
     }
     //extend the string until it is of adequate length
-    for(var row=0; row<tab_rows; row++) {
-      for(var i=1; i<=strings; i++) {
+    for(let row=0; row<tab_rows; row++) {
+      for(let i=1; i<=strings; i++) {
         var str = $('#row_'+row+'_string_'+i).text();
         while(str.length < nice_print_length) {
           str += '-';
@@ -248,7 +247,7 @@ function generate() {
 }
 
 function generate_notes(last) {
-  for(var i=0; i<desired_notes; i++) {
+  for(let i=0; i<desired_notes; i++) {
     var new_note;
     if(random_notes && prob(5)) {   //probability of a random note
       if(prob(70)) {    //not so random note
@@ -268,7 +267,7 @@ function generate_notes(last) {
 
 //this is just a combination of generate_notes and generate_chords
 function generate_notes_and_chords(last) {
-  for(var i=0; i<desired_notes; i++) {
+  for(let i=0; i<desired_notes; i++) {
     if(prob(75)) {  //note
       if(last.type == "chord") {
         last = last.chord[getRandom(0, last.chord.length - 1)];
@@ -296,7 +295,7 @@ function generate_notes_and_chords(last) {
 }
 
 function generate_chords(last) {
-  for(var i=0; i<desired_notes; i++) {
+  for(let i=0; i<desired_notes; i++) {
     var new_chord = get_smart_chord(last);
     tab.push(new_chord);
     last = new_chord;
@@ -349,8 +348,8 @@ function get_smart_note(last) {
 //returns a list of modally correct note in the given interval
 function get_mode_notes(min_str, max_str, min_fret, max_fret) {
   var mode_notes = [];
-  for(var f=min_fret; f<=max_fret; f++) {
-    for(var s=min_str; s<=max_str; s++) {
+  for(let f=min_fret; f<=max_fret; f++) {
+    for(let s=min_str; s<=max_str; s++) {
       if(mode.includes(Note(s, f).name)) {
         mode_notes.push(Note(s, f));
       }
@@ -399,7 +398,7 @@ function get_smart_chord(last) {
   var fret_int = get_chord_fret_interval(last);
   var min_fret = fret_int.min;
   var max_fret = fret_int.max;
-  for(var i=0; i<size; i++) {
+  for(let i=0; i<size; i++) {
     var new_note;
     var mode_notes = get_mode_notes(start_str + i, start_str + i, min_fret, max_fret);
     if(mode_notes.length == 0) {
