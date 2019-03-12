@@ -16,6 +16,10 @@ var default_random_notes = false;
 
 var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
+//-----------------------------------------------
+//INITIALIZATION
+//-----------------------------------------------
+
 //set the root selection
 function set_root_select() {
   var root_select = "";
@@ -185,25 +189,32 @@ function set_tempo_display() {
   $("#tempo_display").html(tempo_value);
 }
 
-//initialize fields
-set_root_select();
-set_mode_select();
-set_notes_select();
-set_strings_select();
-set_frets_select();
-set_max_string_jump_select();
-set_max_fret_jump_select();
-set_tuning_select();
-set_tab_type_select();
-set_tempo_display();
+//when the page is ready, set all the settings
+$(document).ready(function() {
+  //initialize fields
+  set_root_select();
+  set_mode_select();
+  set_notes_select();
+  set_strings_select();
+  set_frets_select();
+  set_max_string_jump_select();
+  set_max_fret_jump_select();
+  set_tuning_select();
+  set_tab_type_select();
+  set_tempo_display();
+  
+  //set nice print to its default value
+  $("#nice_print_checkbox").prop("checked", default_nice_print);
+  update_element("#nice_print_checkbox");
 
-//set nice print to its default value
-$("#nice_print_checkbox").prop("checked", default_nice_print);
-update_element("#nice_print_checkbox");
+  //set random notes to its default value
+  $("#random_notes_checkbox").prop("checked", default_random_notes);
+  update_element("#random_notes_checkbox");
+})
 
-//set random notes to its default value
-$("#random_notes_checkbox").prop("checked", default_random_notes);
-update_element("#random_notes_checkbox");
+//-----------------------------------------------
+//UPDATING
+//-----------------------------------------------
 
 //update the max string jump select and tuning select when the string number changes
 $("#strings").change(function() {
