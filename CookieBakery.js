@@ -22,7 +22,7 @@ var root_list = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
 //set the root selection
 function set_root_select() {
-  var root_select = "";
+  let root_select = "";
   for(let i=0; i<root_list.length; i++) {
     root_select += '<option value="'+root_list[i]+'" '+((root_list[i]==default_root)?'selected="selected"':'')+'>'+root_list[i]+'</option>';
   }
@@ -31,13 +31,13 @@ function set_root_select() {
 
 //set the mode selection
 function set_mode_select() {
-  var mode_select = "";
-  var mode_list = ["Custom","Ionian","Dorian","Phrygian","Lydian","Mixolydian","Aeolian","Locrian"];
+  let mode_select = "";
+  let mode_list = ["Custom","Ionian","Dorian","Phrygian","Lydian","Mixolydian","Aeolian","Locrian"];
   for(let i=0; i<mode_list.length; i++) {
     mode_select += '<option value="'+mode_list[i]+'" '+((mode_list[i]==default_mode)?'selected="selected"':'')+'>'+mode_list[i]+'</option>';
   }
   $("#mode_select").html(mode_select);
-  var mode_checkboxes = "";
+  let mode_checkboxes = "";
   for(let i=0; i<root_list.length; i++) {
     mode_checkboxes += '<label for="'+root_list[i]+'_checkbox" class="checkbox_label">'+root_list[i]+'</label>';
     mode_checkboxes += '<input type="checkbox" name="'+root_list[i]+'_checkbox" id="'+root_list[i]+'_checkbox" class="checkbox" value="'+root_list[i]+'">';
@@ -51,7 +51,7 @@ function set_mode_select() {
 
 //set the number of strings
 function set_strings_select() {
-  var string_number = "";
+  let string_number = "";
   for(let i=1; i<=max_string_number; i++) {
     string_number += '<option value="'+i+'" '+((i==default_string_number)?'selected="selected"':'')+'>'+i+'</option>';
   }
@@ -60,7 +60,7 @@ function set_strings_select() {
 
 //set the number of frets
 function set_frets_select() {
-  var fret_number = "";
+  let fret_number = "";
   for(let i=0; i<=max_fret_number; i++) {
     fret_number += '<option value="'+i+'" '+((i==default_fret_number)?'selected="selected"':'')+'>'+i+'</option>';
   }
@@ -69,7 +69,7 @@ function set_frets_select() {
 
 //set the number of desired notes selection
 function set_notes_select() {
-  var note_number = "";
+  let note_number = "";
   for(let i=1; i<=max_note_number; i++) {
     note_number += '<option value="'+i+'" '+((i==default_note_number)?'selected="selected"':'')+'>'+i+'</option>';
   }
@@ -78,8 +78,8 @@ function set_notes_select() {
 
 //set the max string jump selection
 function set_max_string_jump_select() {
-  var max_string_number = "";
-  var number_of_strings = $("#strings").val();
+  let max_string_number = "";
+  let number_of_strings = $("#strings").val();
   for(let i=0; i<=number_of_strings-1; i++) {
     max_string_number += '<option value="'+i+'">'+i+'</option>';
   }
@@ -88,8 +88,8 @@ function set_max_string_jump_select() {
 
 //set the max fret jump selection
 function set_max_fret_jump_select() {
-  var max_fret_number = "";
-  var number_of_frets = $("#frets").val();
+  let max_fret_number = "";
+  let number_of_frets = $("#frets").val();
   for(let i=1; i<=number_of_frets; i++) {
     max_fret_number += '<option value="'+i+'">'+i+'</option>';
   }
@@ -98,8 +98,8 @@ function set_max_fret_jump_select() {
 
 //set the tuning selection
 function set_tuning_select() {
-  var tuning_select = "<p>Tuning</p>";
-  var number_of_strings = $("#strings").val();
+  let tuning_select = "<p>Tuning</p>";
+  let number_of_strings = $("#strings").val();
   for(let i=1; i<=number_of_strings; i++) {
     tuning_select += '<select required id="tuning_string_'+i+'" class="select tuning_select">';
     for(let k=0; k<root_list.length; k++) {
@@ -112,7 +112,7 @@ function set_tuning_select() {
   tuning_select += "<br>";
   $('#div_tuning').html(tuning_select);
   //default tuning if 6 strings
-  var standard_tuning = ["E","B","G","D","A","E"];
+  let standard_tuning = ["E","B","G","D","A","E"];
   if($("#strings").val() == 6) {
     for(let i=1; i<=number_of_strings; i++) {
       $('#tuning_string_'+i).val(standard_tuning[i-1]);
@@ -128,7 +128,7 @@ function update_element(element_id) {
 
 //select the appropriate notes for the chosen mode
 function set_mode_notes() {
-  var mode = $("#mode_select").val();
+  let mode = $("#mode_select").val();
   if(mode == "Custom") {
     for(let i=0; i<root_list.length; i++) {
       $('[id="'+root_list[i]+'_checkbox"]').prop("checked", false);
@@ -141,8 +141,8 @@ function set_mode_notes() {
       $('[id="'+root_list[i]+'_checkbox"]').prop("checked", false);
       $('[id="'+root_list[i]+'_checkbox"]').attr("disabled", true);
     }
-    var root = $("#root").val();
-    var intervals = [];   //  1=half step (semitone), 2=whole step
+    let root = $("#root").val();
+    let intervals = [];   //  1=half step (semitone), 2=whole step
     if(mode == "Ionian") {
       intervals = [2,2,1,2,2,2,1];
     } else if(mode == "Dorian") {
@@ -158,7 +158,7 @@ function set_mode_notes() {
     } else if(mode == "Locrian") {
       intervals = [1,2,2,1,2,2,2];
     }
-    var noteName = root;
+    let noteName = root;
     for(let i=0; i<intervals.length; i++) {
       for(let k=0; k<intervals[i]; k++) {
         if(noteName == "G#") {
@@ -174,8 +174,8 @@ function set_mode_notes() {
 
 //set the tab type select
 function set_tab_type_select() {
-  var tab_type_list = ["notes","notes &amp; chords","chords"];
-  var tab_type_select = "";
+  let tab_type_list = ["notes","notes &amp; chords","chords"];
+  let tab_type_select = "";
   for(let i=0; i<tab_type_list.length; i++) {
     tab_type_select += '<option value="'+tab_type_list[i]+'" '+((tab_type_list[i]==default_tab_type)?'selected="selected"':'')+'>'+tab_type_list[i]+'</option>';
   }
@@ -184,7 +184,7 @@ function set_tab_type_select() {
 
 //set the tempo display
 function set_tempo_display() {
-  var tempo_value = $("#tempo").val();
+  let tempo_value = $("#tempo").val();
   $("#tempo_display").html(tempo_value);
 }
 
