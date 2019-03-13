@@ -99,9 +99,9 @@ function prob(p) {
   }
 }
 
-//update an element
+//update an element, apparently this was the function that caused problems
 function updateElement(element_id) {
-  $(element_id).load(location.href + " " + element_id);
+  //$(element_id).load(location.href + " " + element_id);
 }
 
 //returns a string with a <p> element containing info about the tab

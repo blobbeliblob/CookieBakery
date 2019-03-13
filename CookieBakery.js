@@ -121,9 +121,9 @@ function set_tuning_select() {
   update_element("#div_tuning");
 }
 
-//update an element
+//update an element, so apparently this was the function that caused problems
 function update_element(element_id) {
-  $(element_id).load(location.href + " " + element_id);
+  //$(element_id).load(location.href + " " + element_id);
 }
 
 //select the appropriate notes for the chosen mode
