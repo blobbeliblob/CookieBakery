@@ -43,6 +43,10 @@ body {
   margin: 10px 0px 0px 0px;
 }
 
+.tuning_and_pitch {
+  display: inline-block;
+}
+
 #div_page_info {
   text-align: center;
   min-height: 100px;
@@ -120,6 +124,11 @@ SELECT DESIGN
 }
 
 .tuning_select {
+  height: 20px;
+  width: 50px;
+}
+
+.pitch_select {
   height: 20px;
   width: 50px;
 }

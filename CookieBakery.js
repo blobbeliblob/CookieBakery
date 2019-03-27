@@ -97,20 +97,21 @@ function set_max_fret_jump_select() {
 }
 
 //set the tuning selection
-function set_tuning_select() {
+function set_tuning_select_original() {
   let tuning_select = "<p>Tuning</p>";
   let number_of_strings = $("#strings").val();
   for(let i=1; i<=number_of_strings; i++) {
-    tuning_select += '<select required id="tuning_string_'+i+'" class="select tuning_select">';
+    tuning_select += '<select id="tuning_string_'+i+'" class="select tuning_select">';
     for(let k=0; k<root_list.length; k++) {
       tuning_select += '<option value="'+root_list[k]+'">'+root_list[k]+'</option>';
     }
     tuning_select += '</select>';
-    $('#div_tuning').html(tuning_select);
+    tuning_select += '<select id="pitch_string_'+i+'" class="select pitch_select"></select>';
+    $('#div_tuning_and_pitch').html(tuning_select);
     tuning_select += '&nbsp||-----<br>';
   }
   tuning_select += "<br>";
-  $('#div_tuning').html(tuning_select);
+  $('#div_tuning_and_pitch').html(tuning_select);
   //default tuning if 6 strings
   let standard_tuning = ["E","B","G","D","A","E"];
   if($("#strings").val() == 6) {
@@ -118,7 +119,49 @@ function set_tuning_select() {
       $('#tuning_string_'+i).val(standard_tuning[i-1]);
     }
   }
-  update_element("#div_tuning");
+  set_pitch_select();
+}
+
+function set_tuning_select() {
+  let tuning_div = "<p>Tuning &amp; Pitch</p>";
+  tuning_div += '<div id="div_tuning" class="tuning_and_pitch"></div>';
+  tuning_div += '<div id="div_pitch" class="tuning_and_pitch"></div>';
+  tuning_div += '<div id="div_string_visualization" class="tuning_and_pitch"></div>';
+  $('#div_tuning_and_pitch').html(tuning_div);
+  let tuning_select = "";
+  let number_of_strings = $("#strings").val();
+  for(let i=1; i<=number_of_strings; i++) {
+    tuning_select += '<select id="tuning_string_'+i+'" class="select tuning_select">';
+    for(let k=0; k<root_list.length; k++) {
+      tuning_select += '<option value="'+root_list[k]+'">'+root_list[k]+'</option>';
+    }
+    tuning_select += '</select><br>';
+  }
+  $('#div_tuning').html(tuning_select);
+  let pitch_select = "";
+  for(let i=1; i<=number_of_strings; i++) {
+    pitch_select += '<select id="pitch_string_'+i+'" class="select pitch_select"></select><br>';
+  }
+  $('#div_pitch').html(pitch_select);
+  set_pitch_select();
+  let string_visualizaton = "";
+  for(let i=1; i<=number_of_strings; i++) {
+    string_visualizaton += '&nbsp||-----<br>';
+  }
+  $('#div_string_visualization').html(string_visualizaton);
+}
+
+//set the pitch selection
+function set_pitch_select() {
+  let number_of_strings = $("#strings").val();
+  for(let i=1; i<=number_of_strings; i++) {
+    let pitch_select = "";
+    let note_name = $("#tuning_string_"+i).val();
+    for(let k=1; k<=8; k++) {
+      pitch_select += '<option value="'+note_name+k+'">'+note_name+k+'</option>';
+    }
+    $("#pitch_string_"+i).html(pitch_select);
+  }
 }
 
 //update an element, so apparently this was the function that caused problems
@@ -204,11 +247,9 @@ $(document).ready(function() {
 
   //set nice print to its default value
   $("#nice_print_checkbox").prop("checked", default_nice_print);
-  update_element("#nice_print_checkbox");
 
   //set random notes to its default value
   $("#random_notes_checkbox").prop("checked", default_random_notes);
-  update_element("#random_notes_checkbox");
 });
 
 //-----------------------------------------------
@@ -218,9 +259,7 @@ $(document).ready(function() {
 //update the max string jump select and tuning select when the string number changes
 $("#strings").change(function() {
   set_max_string_jump_select();
-  update_element("#strings");
   set_tuning_select();
-  update_element("#div_tuning");
 });
 //update the mode select when root is changed or mode is changed
 $("#root").change(function() {
@@ -230,12 +269,12 @@ $("#mode_select").change(function() {
   set_mode_notes();
 });
 //update the max fret jump select when the fret number changes
-$("#frets").change(function() {set_max_fret_jump_select();update_element("#frets");});
+$("#frets").change(function() {set_max_fret_jump_select();});
 //update the tuning select when it is changed
-$("#div_tuning").change(function() {
-  update_element("#div_tuning");
+$("#div_tuning_and_pitch").change(function() {
+  set_pitch_select();
+  console.log("hej");
 });
-
 //update the tempo display when the slider is moved
 $("#tempo").change(function() {
   set_tempo_display();
