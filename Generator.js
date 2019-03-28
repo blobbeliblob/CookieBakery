@@ -63,7 +63,8 @@ function initialize() {
 //returns a "note" object, the d parameter should be an integer in [1,2,3,4]
 function Note(s, f, d = 1) {
   let n = getNoteName(s, f);
-  return {type: "note", string: s, fret: f, name: n, duration: d};
+  let p = getNotePitch(s, f);
+  return {type: "note", string: s, fret: f, name: n, pitch: p, duration: d};
 }
 
 //returns a "chord" object, the chord parameter should be a list of Note objects
@@ -83,6 +84,24 @@ function getNoteName(s, f) {
     }
   }
   return noteName;
+}
+
+//returns the pitch of a note on a given string and fret
+function getNotePitch(s, f) {
+  let stringName = $('#tuning_string_'+s).val();
+  let noteName = stringName;
+  let notePitch = $('#pitch_string_'+s).val();
+  let pitchHeight = parseInt(notePitch[notePitch.length-1]);
+  for(let i=0; i<f; i++) {
+    if(noteName == "G#") {
+      noteName = "A";
+      pitchHeight++;
+    } else {
+      noteName = tonics[tonics.indexOf(noteName)+1];
+    }
+  }
+  notePitch = noteName + pitchHeight;
+  return notePitch;
 }
 
 //returns a random number between min and max, where min >= 0
@@ -504,6 +523,7 @@ function download_tab() {
 //AUDIO
 //------------------------------------
 
+/*
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 const audio_element = document.createElement('audio');
@@ -529,3 +549,37 @@ button_play.addEventListener('click', function() {
 audio_element.addEventListener('ended', () => {
     $("#button_play").dataset.playing = 'false';
 }, false);
+*/
+
+var synth = new Tone.Synth().toMaster()
+
+function get_real_duration(d) {
+  if(d == 1) {return "8n";}
+  if(d == 2) {return "4n";}
+  if(d == 3) {return "2n";}
+  if(d == 4) {return "1m";}
+}
+
+function play_note(note) {
+  synth.triggerAttackRelease(note.pitch, get_real_duration(note.duration));
+}
+
+function play_tab() {
+  Tone.Transport.bpm.value = parseInt($("#tempo").val());
+  for(let i=0; i<tab.length; i++) {
+    let note = tab[i];
+    if(note.type == "note") {
+      Tone.Transport.schedule(play_note);
+    }
+  }
+}
+
+let currently_playing = false;
+$("#button_play").click(function() {
+  if(currently_playing) {
+    Tone.Transport.toggle()
+  } else {
+    currently_playing = true;
+    play_tab();
+  }
+});

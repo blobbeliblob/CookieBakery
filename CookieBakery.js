@@ -131,7 +131,7 @@ function set_tuning_select() {
   let tuning_select = "";
   let number_of_strings = $("#strings").val();
   for(let i=1; i<=number_of_strings; i++) {
-    tuning_select += '<select id="tuning_string_'+i+'" class="select tuning_select">';
+    tuning_select += '<select id="tuning_string_'+i+'" class="select tuning_select" title="The tuning of string '+i+'">';
     for(let k=0; k<root_list.length; k++) {
       tuning_select += '<option value="'+root_list[k]+'">'+root_list[k]+'</option>';
     }
@@ -140,15 +140,22 @@ function set_tuning_select() {
   $('#div_tuning').html(tuning_select);
   let pitch_select = "";
   for(let i=1; i<=number_of_strings; i++) {
-    pitch_select += '<select id="pitch_string_'+i+'" class="select pitch_select"></select><br>';
+    pitch_select += '<select id="pitch_string_'+i+'" class="select pitch_select" title="The pitch of string '+i+'"></select><br>';
   }
   $('#div_pitch').html(pitch_select);
-  set_pitch_select();
   let string_visualizaton = "";
   for(let i=1; i<=number_of_strings; i++) {
     string_visualizaton += '&nbsp||-----<br>';
   }
   $('#div_string_visualization').html(string_visualizaton);
+  //default tuning if 6 strings
+  let standard_tuning = ["E","B","G","D","A","E"];
+  if($("#strings").val() == 6) {
+    for(let i=1; i<=number_of_strings; i++) {
+      $('#tuning_string_'+i).val(standard_tuning[i-1]);
+    }
+  }
+  set_pitch_select();
 }
 
 //set the pitch selection
@@ -269,9 +276,11 @@ $("#mode_select").change(function() {
   set_mode_notes();
 });
 //update the max fret jump select when the fret number changes
-$("#frets").change(function() {set_max_fret_jump_select();});
+$("#frets").change(function() {
+  set_max_fret_jump_select();
+});
 //update the tuning select when it is changed
-$("#div_tuning_and_pitch").change(function() {
+$("#div_tuning").change(function() {
   set_pitch_select();
   console.log("hej");
 });
