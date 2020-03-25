@@ -169,6 +169,13 @@ function set_pitch_select() {
     }
     $("#pitch_string_"+i).html(pitch_select);
   }
+  //default pitches if 6 strings
+  let standard_pitch = ["E4", "B3", "G3", "D3", "A2", "E2"];
+  if($("#strings").val() == 6) {
+	for (let i=1; i<=number_of_strings; i++) {
+	  $('#pitch_string_'+i).val(standard_pitch[i-1]);
+	}
+  }
 }
 
 //update an element, so apparently this was the function that caused problems
@@ -282,7 +289,6 @@ $("#frets").change(function() {
 //update the tuning select when it is changed
 $("#div_tuning").change(function() {
   set_pitch_select();
-  console.log("hej");
 });
 //update the tempo display when the slider is moved
 $("#tempo").change(function() {

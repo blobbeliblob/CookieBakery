@@ -93,9 +93,11 @@ function getNotePitch(s, f) {
   let notePitch = $('#pitch_string_'+s).val();
   let pitchHeight = parseInt(notePitch[notePitch.length-1]);
   for(let i=0; i<f; i++) {
+	if(noteName == "B") {
+	  pitchHeight++;
+	}
     if(noteName == "G#") {
       noteName = "A";
-      pitchHeight++;
     } else {
       noteName = tonics[tonics.indexOf(noteName)+1];
     }
@@ -551,7 +553,8 @@ audio_element.addEventListener('ended', () => {
 }, false);
 */
 
-var synth = new Tone.Synth().toMaster()
+var synth = new Tone.Synth().toMaster();
+var part;
 
 function get_real_duration(d) {
   if(d == 1) {return "8n";}
@@ -560,18 +563,26 @@ function get_real_duration(d) {
   if(d == 4) {return "1m";}
 }
 
-function play_note(note) {
-  synth.triggerAttackRelease(note.pitch, get_real_duration(note.duration));
-}
-
 function play_tab() {
   Tone.Transport.bpm.value = parseInt($("#tempo").val());
+  let schedule = [];
+  let t = {'1m' : 0, '2n' : 0, '4n' : 0, '8n' : 0};
   for(let i=0; i<tab.length; i++) {
     let note = tab[i];
     if(note.type == "note") {
-      Tone.Transport.schedule(play_note);
+      schedule.push({time : {'1m' : t['1m'], '2n' : t['2n'], '4n' : t['4n'], '8n' : t['8n']}, note : note.pitch, dur : get_real_duration(note.duration)});
+      t[get_real_duration(note.duration)]++;
+    } else if(note.type == "chord") {
+      for(let k=0; k<note.chord.length; k++) {
+        schedule.push({time : {'1m' : t['1m'], '2n' : t['2n'], '4n' : t['4n'], '8n' : t['8n']}, note : note.chord[k].pitch, dur : get_real_duration(note.duration)});
+      }
+      t[get_real_duration(note.duration)]++;
     }
   }
+  part = new Tone.Part(function(time, event) {
+    synth.triggerAttackRelease(event.note, event.dur, time);
+  }, schedule);
+  part.start(0);
 }
 
 let currently_playing = false;
