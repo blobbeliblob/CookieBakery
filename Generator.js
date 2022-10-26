@@ -553,8 +553,8 @@ audio_element.addEventListener('ended', () => {
 }, false);
 */
 
-var synth = new Tone.Synth().toMaster();
-var part;
+//var synth = new Tone.Synth().toMaster();
+//var part;
 
 function get_real_duration(d) {
   if(d == 1) {return "8n";}
@@ -563,7 +563,7 @@ function get_real_duration(d) {
   if(d == 4) {return "1m";}
 }
 
-function play_tab() {
+function play_tab(synth) {
   Tone.Transport.bpm.value = parseInt($("#tempo").val());
   let schedule = [];
   let t = {'1m' : 0, '2n' : 0, '4n' : 0, '8n' : 0};
@@ -579,7 +579,7 @@ function play_tab() {
       t[get_real_duration(note.duration)]++;
     }
   }
-  part = new Tone.Part(function(time, event) {
+  let part = new Tone.Part(function(time, event) {
     synth.triggerAttackRelease(event.note, event.dur, time);
   }, schedule);
   part.start(0);
@@ -591,6 +591,7 @@ $("#button_play").click(function() {
     Tone.Transport.toggle()
   } else {
     currently_playing = true;
-    play_tab();
+  	let synth = new Tone.Synth().toMaster();
+    play_tab(synth);
   }
 });
